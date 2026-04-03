@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code — Local</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="layout">
+    <aside id="sidebar" role="navigation" aria-label="대화 목록">
+        <div class="sidebar-header">
+            <span class="sidebar-title">대화 목록</span>
+            <button id="sidebar-close" class="icon-btn sidebar-close-btn" title="사이드바 닫기" aria-label="사이드바 닫기">&times;</button>
+        </div>
+        <div class="sidebar-tabs">
+            <button class="sidebar-tab active" data-tab="conversations">대화</button>
+            <button class="sidebar-tab" data-tab="bookmarks">북마크</button>
+        </div>
+        <div class="sidebar-search" id="sidebar-search-wrap">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="sidebar-search-input" type="text" placeholder="대화 검색..." aria-label="대화 검색">
+        </div>
+        <div id="conversation-list" role="list"></div>
+    </aside>
+    <div id="app">
+        <header>
+            <div class="header-left">
+                <button id="sidebar-toggle" class="icon-btn" title="대화 목록" aria-label="대화 목록 열기">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <h1>Claude Code <span class="badge">Local</span></h1>
+            </div>
+            <div class="header-right">
+                <select id="model-select" class="model-select" title="모델 선택" aria-label="AI 모델 선택">
+                    <option value="">기본 모델</option>
+                    <option value="claude-opus-4-6">Opus</option>
+                    <option value="claude-sonnet-4-6">Sonnet</option>
+                    <option value="claude-haiku-4-5-20251001">Haiku</option>
+                </select>
+                <span id="model-info" class="model-info"></span>
+                <button id="settings-btn" class="icon-btn" title="설정" aria-label="설정 열기">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+                <button id="new-chat" class="icon-btn" title="새 대화" aria-label="새 대화 시작">+</button>
+            </div>
+        </header>
+        <div id="context-bar" class="context-bar" style="display:none">
+            <div class="context-bar-inner">
+                <div class="context-bar-fill" id="context-fill"></div>
+            </div>
+            <span id="context-label" class="context-label"></span>
+        </div>
+        <div id="messages" role="log" aria-label="대화 내용" aria-live="polite"></div>
+        <div id="input-area">
+            <div id="paper-study-banner" style="display:none">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                <span>Paper Study 모드 — 논문 PDF를 첨부하고 보내세요</span>
+                <button id="paper-study-cancel" aria-label="Paper Study 모드 취소">&times;</button>
+            </div>
+            <div id="attachments-preview"></div>
+            <div id="input-row">
+                <div id="attach-buttons">
+                    <button id="attach-image-btn" class="attach-btn" title="이미지 첨부" aria-label="이미지 첨부">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </button>
+                    <button id="attach-file-btn" class="attach-btn" title="파일 첨부" aria-label="파일 첨부">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                    </button>
+                    <button id="attach-path-btn" class="attach-btn" title="경로로 첨부 (복사 없이)" aria-label="로컬 경로로 첨부">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="path-input-row" style="display:none">
+                    <input id="path-input" type="text" placeholder="/Users/.../paper.pdf" autocomplete="off" spellcheck="false">
+                    <button id="path-input-confirm">첨부</button>
+                    <button id="path-input-cancel">&times;</button>
+                </div>
+                <textarea id="input" placeholder="메시지를 입력하세요... (Shift+Enter: 줄바꿈)" rows="1" autofocus></textarea>
+                <button id="send-btn" title="보내기" aria-label="메시지 보내기">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+            <input type="file" id="image-file-input" accept="image/*" multiple hidden>
+            <input type="file" id="general-file-input" accept="*/*" multiple hidden>
+        </div>
+    </div>
+    </div><!-- /layout -->
+
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay" style="display:none">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>설정</h2>
+                <button id="settings-close" class="icon-btn" aria-label="설정 닫기">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label class="modal-label">시스템 프롬프트</label>
+                <textarea id="system-prompt-input" class="modal-textarea" rows="6" placeholder="매번 적용할 지시사항을 입력하세요 (예: 한국어로 답변해줘, 코드는 TypeScript로)"></textarea>
+                <p class="modal-hint">새 대화마다 자동으로 적용됩니다. 빈칸이면 기본값 사용.</p>
+
+                <label class="modal-label" style="margin-top:16px">작업 디렉토리</label>
+                <input id="cwd-input" type="text" class="modal-input" placeholder="예: /Users/yourname/my-project">
+                <p class="modal-hint">Claude가 파일을 읽고 쓸 기본 경로. 빈칸이면 홈 디렉토리.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="settings-save" class="modal-save-btn">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <script src="/app.js"></script>
+</body>
+</html>

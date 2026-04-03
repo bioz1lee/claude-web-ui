@@ -1,0 +1,21 @@
+# Personal data — never commit these
+conversations.json
+bookmarks.json
+history/
+uploads/
+
+# Runtime artifacts
+.server.log
+.server_started
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Local app bundle
+Claude\ Code.app/
+
+# Internal planning files
+.kkirikkiri/
