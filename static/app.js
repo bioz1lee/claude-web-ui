@@ -52,11 +52,15 @@ const PAPER_STUDY_PROMPT = `첨부 논문을 분석해줘. 아래 포맷을 정�
 ## 3) Story Flow
 Fig1→Fig2→...→한줄결론 형태로. 각 figure가 전체 스토리에서 어떤 역할인지 화살표로 연결.
 
-## 4) Figure 표 (main figures만, 출력의 60%↑)
+## 4) Figure 표 (main figures만)
+**규칙 — 반드시 지켜:**
+- Panel 컬럼 값은 반드시 "Fig Na" 형식 (예: Fig 1a, Fig 2b, Fig 3). "Figure Na" "1a" "Panel 1a" 등 다른 표기 금지.
+- Main figure(Fig 1, 2, 3…)만 포함. Extended Data Figure는 표에 넣지 말 것.
+- Extended Data는 핵심결과 컬럼에서 "(Extended Data Fig X 참조)" 식으로 짧게만 언급.
+- Schematic/Architecture panel은 핵심결과를 한 줄로 요약.
+- 표는 하나로 통합 (figure별로 나누지 말 것).
+
 |Panel|보여주는 것(10단어↓)|핵심결과(1문장)|읽는 법(뭘 봐야 하는지 한 줄)|
-Schematic panel은 한마디로 요약.
-Extended Data는 "Extended Data Fig X에서 추가 검증" 식으로 언급만.
-Architecture 세부 panel은 한 줄 요약으로 축소.
 
 ## 5) 전문용어 Glossary
 논문에 등장하는 핵심 전문용어를 표로 정리.
@@ -118,13 +122,15 @@ document.querySelectorAll(".sidebar-tab").forEach(tab => {
 });
 
 // --- Message persistence ---
-async function saveMessage(sid, role, content) {
+async function saveMessage(sid, role, content, meta = null) {
   if (!sid) return;
   try {
+    const payload = { role, content, timestamp: new Date().toISOString() };
+    if (meta) payload.meta = meta;
     await fetch(`/api/conversations/${sid}/messages`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role, content, timestamp: new Date().toISOString() }),
+      body: JSON.stringify(payload),
     });
   } catch (e) { console.error("Failed to save message:", e); }
 }
@@ -190,7 +196,13 @@ async function loadConversations() {
           const messages = await loadMessages(streamingSessionId);
           for (const msg of messages) {
             const div = addMessage(msg.role, msg.content);
-            if (msg.role === "assistant") addBookmarkBtn(div, msg.content);
+            if (msg.role === "assistant") {
+              addBookmarkBtn(div, msg.content, msg.meta?.pdfUrl || null);
+              if (msg.meta?.pdfUrl) {
+                const contentEl = div.querySelector('.message-content');
+                if (contentEl) renderPdfFigureGallery(contentEl, msg.meta.pdfUrl);
+              }
+            }
           }
           sidebar.classList.remove("open");
           loadConversations();
@@ -245,7 +257,13 @@ async function loadConversations() {
           if (messages.length > 0) {
             for (const msg of messages) {
               const div = addMessage(msg.role, msg.content);
-              if (msg.role === "assistant") addBookmarkBtn(div, msg.content);
+              if (msg.role === "assistant") {
+                addBookmarkBtn(div, msg.content, msg.meta?.pdfUrl || null);
+                if (msg.meta?.pdfUrl) {
+                  const contentEl = div.querySelector('.message-content');
+                  if (contentEl) renderPdfFigureGallery(contentEl, msg.meta.pdfUrl);
+                }
+              }
             }
           } else {
             addMessage("assistant", `이전 대화를 이어갑니다: "${escapeHtml(c.title)}"\n\n메시지를 입력하면 이전 대화에 이어서 응답합니다.`);
@@ -475,6 +493,7 @@ function showEmpty() {
       <div class="empty-subtitle">무엇을 도와드릴까요?</div>
       <div class="empty-chips">
         <button class="empty-chip" data-skill="paper-study">Paper Study</button>
+        <button class="empty-chip" data-skill="paper-search">논문 검색</button>
         <button class="empty-chip" data-prompt="다음 분석을 수행하는 Python 또는 R 코드를 작성해줘. 입력 데이터 형식, 주요 파라미터 설명, 시각화까지 포함해줘. 분석 내용: ">분석 코드 작성</button>
         <button class="empty-chip" data-prompt="이 코드를 리뷰해줘. 버그, 비효율적인 부분, 생물학적으로 부적절한 파라미터 설정이 있는지 확인하고 개선안을 제시해줘">Bio 코드 리뷰</button>
         <button class="empty-chip" data-prompt="다음 분석 결과를 바탕으로 논문 수준의 글을 작성해줘. Methods, Results, 또는 figure legend 중 필요한 섹션을 지정할게. 학술적 톤으로, 재현 가능하도록 구체적으로 작성해줘. 내용: ">논문 작성 지원</button>
@@ -488,6 +507,9 @@ function showEmpty() {
         document.getElementById("paper-study-banner").style.display = "flex";
         inputEl.placeholder = "추가 지시사항 입력 (선택사항)";
         inputEl.dispatchEvent(new Event("input"));
+      } else if (chip.dataset.skill === "paper-search") {
+        openPaperSearchModal();
+        return;
       } else {
         inputEl.value = chip.dataset.prompt;
         inputEl.dispatchEvent(new Event("input"));
@@ -508,6 +530,160 @@ document.getElementById("paper-study-cancel").addEventListener("click", () => {
   clearPaperStudyMode();
   inputEl.focus();
 });
+
+// ── Paper Search Modal ────────────────────────────────────────────────────────
+const paperSearchModal = document.getElementById("paper-search-modal");
+const paperSearchInput = document.getElementById("paper-search-input");
+const paperSearchBtn = document.getElementById("paper-search-btn");
+const paperSearchStatus = document.getElementById("paper-search-status");
+const paperSearchResults = document.getElementById("paper-search-results");
+
+function openPaperSearchModal() {
+  paperSearchModal.style.display = "flex";
+  paperSearchInput.focus();
+}
+
+function closePaperSearchModal() {
+  paperSearchModal.style.display = "none";
+  paperSearchInput.value = "";
+  paperSearchStatus.style.display = "none";
+  paperSearchResults.innerHTML = "";
+  document.getElementById("paper-years-select").value = "5";
+  document.getElementById("paper-review-check").checked = false;
+  document.getElementById("paper-max-select").value = "10";
+}
+
+document.getElementById("paper-search-close").addEventListener("click", closePaperSearchModal);
+paperSearchModal.addEventListener("click", (e) => {
+  if (e.target === paperSearchModal) closePaperSearchModal();
+});
+paperSearchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") paperSearchBtn.click();
+});
+paperSearchBtn.addEventListener("click", () => {
+  const q = paperSearchInput.value.trim();
+  if (q) searchPapers(q);
+});
+
+const paperSortSelect = document.getElementById("paper-sort-select");
+paperSortSelect.addEventListener("change", () => {
+  const q = paperSearchInput.value.trim();
+  if (q && paperSearchResults.children.length > 0) searchPapers(q);
+});
+
+const paperYearsSelect = document.getElementById("paper-years-select");
+const paperReviewCheck = document.getElementById("paper-review-check");
+const paperMaxSelect = document.getElementById("paper-max-select");
+[paperYearsSelect, paperReviewCheck, paperMaxSelect].forEach(el => {
+  el.addEventListener("change", () => {
+    const q = paperSearchInput.value.trim();
+    if (q && paperSearchResults.children.length > 0) searchPapers(q);
+  });
+});
+
+async function searchPapers(q) {
+  const sortVal = paperSortSelect.value;
+  const yearsVal = paperYearsSelect.value;
+  const reviewVal = paperReviewCheck.checked ? "1" : "0";
+  const maxVal = paperMaxSelect.value;
+  paperSearchStatus.textContent = "검색 중...";
+  paperSearchStatus.className = "paper-search-status";
+  paperSearchStatus.style.display = "block";
+  paperSearchResults.innerHTML = "";
+  paperSearchBtn.disabled = true;
+
+  try {
+    const resp = await fetch(`/api/paper-search?q=${encodeURIComponent(q)}&max=${maxVal}&sort=${sortVal}&years=${yearsVal}&review=${reviewVal}`);
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || "검색 실패");
+
+    if (!data.papers || data.papers.length === 0) {
+      paperSearchStatus.textContent = "검색 결과가 없습니다.";
+      return;
+    }
+    paperSearchStatus.style.display = "none";
+    renderPaperResults(data.papers);
+  } catch (err) {
+    paperSearchStatus.textContent = `오류: ${err.message}`;
+    paperSearchStatus.className = "paper-search-status error";
+  } finally {
+    paperSearchBtn.disabled = false;
+  }
+}
+
+function renderPaperResults(papers) {
+  paperSearchResults.innerHTML = "";
+  papers.forEach(p => {
+    const authorsShort = p.authors.length > 3
+      ? `${p.authors.slice(0, 3).join(", ")} 외 ${p.authors.length - 3}명`
+      : p.authors.join(", ");
+
+    const card = document.createElement("div");
+    card.className = "paper-card";
+    card.innerHTML = `
+      <div class="paper-card-top">
+        <a class="paper-title-link" href="${p.url}" target="_blank" rel="noopener">${p.title || "(제목 없음)"}</a>
+        ${p.year ? `<span class="paper-year-badge">${p.year}</span>` : ""}
+      </div>
+      <div class="paper-meta">
+        ${p.journal ? `<span class="paper-meta-item paper-journal">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          ${p.journal}</span>` : ""}
+        ${p.citations != null ? `<span class="paper-meta-item paper-citations">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          인용 ${p.citations.toLocaleString()}회</span>` : ""}
+        ${authorsShort ? `<span class="paper-meta-item">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          ${authorsShort}</span>` : ""}
+      </div>
+      ${p.affiliation ? `<div class="paper-affiliation">🏛 ${p.affiliation}</div>` : ""}
+      ${p.doi ? `<div class="paper-doi">DOI: ${p.doi}</div>` : ""}
+      ${p.abstract ? `<div class="paper-abstract-toggle">
+        <div class="paper-abstract-preview">${p.abstract.length > 150 ? p.abstract.slice(0, 150) + "..." : p.abstract}</div>
+        ${p.abstract.length > 150 ? `<button class="paper-abstract-btn">더 보기 ▾</button>
+        <div class="paper-abstract" style="display:none">${p.abstract}</div>` : ""}
+      </div>` : ""}
+      <button class="paper-insert-btn">채팅에 삽입</button>
+    `;
+
+    // abstract toggle
+    const abstractBtn = card.querySelector(".paper-abstract-btn");
+    const abstractEl = card.querySelector(".paper-abstract");
+    const abstractPreview = card.querySelector(".paper-abstract-preview");
+    if (abstractBtn && abstractEl) {
+      abstractBtn.addEventListener("click", () => {
+        const open = abstractEl.style.display !== "none";
+        abstractEl.style.display = open ? "none" : "block";
+        if (abstractPreview) abstractPreview.style.display = open ? "block" : "none";
+        abstractBtn.textContent = open ? "더 보기 ▾" : "접기 ▴";
+      });
+    }
+
+    // insert to chat
+    card.querySelector(".paper-insert-btn").addEventListener("click", () => {
+      const authors = p.authors.length > 2 ? `${p.authors[0]} et al.` : p.authors.join(", ");
+      const lines = [
+        `[논문] ${authors} (${p.year || "연도미상"}). "${p.title}"`,
+        [
+          p.journal ? `저널: ${p.journal}` : null,
+          p.citations != null ? `피인용: ${p.citations}회` : null,
+          p.doi ? `DOI: ${p.doi}` : null,
+        ].filter(Boolean).join(" | "),
+        p.affiliation ? `소속: ${p.affiliation}` : null,
+        p.abstract ? `초록: ${p.abstract}` : null,
+      ].filter(Boolean).join("\n");
+
+      inputEl.value = lines + "\n\n";
+      inputEl.dispatchEvent(new Event("input"));
+      closePaperSearchModal();
+      inputEl.focus();
+      // move cursor to end
+      inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+    });
+
+    paperSearchResults.appendChild(card);
+  });
+}
 
 newChatBtn.addEventListener("click", () => {
   sessionId = null;
@@ -697,12 +873,15 @@ async function sendMessage() {
 
   // paperStudyMode: prepend the analysis prompt
   let messageText = text;
+  let isPaperStudy = false;
   if (paperStudyMode) {
     messageText = PAPER_STUDY_PROMPT + (text ? "\n\n추가 지시사항: " + text : "");
+    isPaperStudy = true;
     clearPaperStudyMode();
   }
 
   const payload = { message: messageText, session_id: sessionId };
+  if (isPaperStudy) payload.paper_study = true;
   if (modelSelect.value) payload.model = modelSelect.value;
   const sp = localStorage.getItem("system_prompt");
   if (sp) payload.system_prompt = sp;
@@ -823,8 +1002,11 @@ async function sendMessage() {
             // Collect final text for saving & bookmarking
             const finalText = contentParts.filter(p => p.type === "text").map(p => p.text).join("\n");
             lastAssistantText = finalText;
-            if (sessionId && finalText) saveMessage(sessionId, "assistant", finalText);
-            addBookmarkBtn(assistantEl, finalText);
+            if (sessionId && finalText) {
+              const msgMeta = thisPaperStudyPdfUrl ? { pdfUrl: thisPaperStudyPdfUrl } : null;
+              saveMessage(sessionId, "assistant", finalText, msgMeta);
+            }
+            addBookmarkBtn(assistantEl, finalText, thisPaperStudyPdfUrl);
             // Stats
             const stats = [];
             if (event.input_tokens) {
@@ -964,10 +1146,12 @@ async function renderPdfFigureGallery(contentEl, pdfUrl) {
 
   // Figure 표 h2 찾기
   let figHeading = null;
-  for (const h of contentEl.querySelectorAll('h2')) {
+  const allH2 = contentEl.querySelectorAll('h2');
+  console.log('[FIG-DEBUG] h2 개수:', allH2.length, '내용:', Array.from(allH2).map(h => h.textContent));
+  for (const h of allH2) {
     if (/figure|fig/i.test(h.textContent)) { figHeading = h; break; }
   }
-  if (!figHeading) return;
+  if (!figHeading) { console.log('[FIG-DEBUG] figHeading 못 찾음'); return; }
 
   // 인접한 table 찾기
   let tableEl = null;
@@ -977,7 +1161,7 @@ async function renderPdfFigureGallery(contentEl, pdfUrl) {
     if (/^H[123]$/.test(el.tagName)) break;
     el = el.nextElementSibling;
   }
-  if (!tableEl) return;
+  if (!tableEl) { console.log('[FIG-DEBUG] table 못 찾음'); return; }
 
   // 헤더 파싱 — "Panel" 컬럼 위치 확인
   const headers = Array.from(tableEl.querySelectorAll('thead th')).map(th => th.textContent.trim());
@@ -985,125 +1169,407 @@ async function renderPdfFigureGallery(contentEl, pdfUrl) {
   const rows = Array.from(tableEl.querySelectorAll('tbody tr'));
   if (!rows.length) return;
 
-  // 로딩 표시
+  // 로딩 표시 (진행 단계 + 프로그레스 바)
   const loadingEl = document.createElement('div');
   loadingEl.className = 'figure-loading';
-  loadingEl.textContent = 'Figure 이미지 매칭 중...';
+  loadingEl.innerHTML = `
+    <div class="figure-loading-bar"><div class="figure-loading-fill"></div></div>
+    <span class="figure-loading-text">PDF 로드 중...</span>
+  `;
   figHeading.insertAdjacentElement('afterend', loadingEl);
+  const loadingFill = loadingEl.querySelector('.figure-loading-fill');
+  const loadingText = loadingEl.querySelector('.figure-loading-text');
+  function updateLoading(pct, msg) {
+    loadingFill.style.width = `${pct}%`;
+    loadingText.textContent = msg;
+  }
 
   // PDF 로드
   let pdf;
   try {
     pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+    updateLoading(15, `PDF 로드 완료 (${pdf.numPages}p) — 페이지 분석 중...`);
   } catch (e) {
     loadingEl.remove();
     return;
   }
 
-  // 각 페이지 텍스트 추출 (figure 위치 매칭용)
+  // ── 페이지 텍스트 병렬 추출 (getOperatorList 제거 — 텍스트만으로 충분) ──
   const pageIndex = [];
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
+  const t0 = performance.now();
+
+  const pages = [];
+  for (let i = 1; i <= pdf.numPages; i++) pages.push(await pdf.getPage(i));
+  const textResults = await Promise.all(pages.map(async (page) => {
     const tc = await page.getTextContent();
-    const text = tc.items.map(it => it.str).join(' ');
-    pageIndex.push({ pageNum: i, page, text });
+    return { page, items: tc.items, text: tc.items.map(it => it.str).join(' ') };
+  }));
+
+  for (let i = 0; i < textResults.length; i++) {
+    const tr = textResults[i];
+    pageIndex.push({
+      pageNum: i + 1, page: tr.page, text: tr.text, textItems: tr.items,
+      textLength: tr.text.length
+    });
+  }
+  console.log(`[FIG-PROFILE] ${pdf.numPages}p 텍스트 추출 완료 (${(performance.now()-t0).toFixed(0)}ms)`);
+  updateLoading(40, '페이지 분석 완료 — Figure 위치 매칭 중...');
+
+
+  // ── References 경계 탐지: main figures는 항상 References 앞에 있다 ──
+  // Extended Data / Supplementary는 항상 References 뒤에 위치
+  let refsBoundary = pdf.numPages + 1; // 기본값: 논문 끝까지 main 영역
+  for (const p of pageIndex) {
+    // "References", "Bibliography", "Literature Cited" 등 섹션 헤더 탐지
+    if (/\b(?:references|bibliography|literature\s+cited|works\s+cited)\b/i.test(p.text)) {
+      // 텍스트가 주로 참고문헌 목록인지 확인 (짧은 인용이 아닌 References 섹션)
+      // 참고문헌 페이지는 DOI, 저널명, 연도 등이 밀집됨
+      const hasDois = (p.text.match(/\b\d{4}\b/g) || []).length >= 5; // 연도가 5개 이상
+      const hasRefHeader = /(?:^|\n)\s*(?:references|bibliography)\s*(?:\n|$)/im.test(p.text);
+      if (hasRefHeader || hasDois) {
+        refsBoundary = p.pageNum;
+        console.log(`[FIG-REFS] References 시작: p.${refsBoundary}`);
+        break;
+      }
+    }
   }
 
-  // 피겨 번호로 가장 적합한 페이지 찾기
-  // 텍스트가 적은 페이지 선호 (figure page는 캡션 외 텍스트가 적음)
+  // ── 스코어 기반 figure 페이지 탐지 ─────────────────────────────
   function findPageForFig(figNum) {
-    const pat = new RegExp(`\\bfig(?:ure|\\.)?\\s*\\.?\\s*${figNum}(?=[^\\d]|$)`, 'i');
-    const matches = pageIndex.filter(p => pat.test(p.text));
-    if (!matches.length) return null;
-    return matches.reduce((best, p) => (!best || p.text.length < best.text.length) ? p : best, null);
-  }
+    const figPat = new RegExp(`\\bfig(?:ure|\\.)?\\s*\\.?\\s*${figNum}(?=[^\\d]|$)`, 'i');
+    const captionPat = new RegExp(
+      `(?:^|[\\n ])\\s*Fig(?:ure|\\.)?\\s*\\.?\\s*${figNum}\\b[.:|\\s]`, 'im'
+    );
+    const suppRefPat = new RegExp(
+      `(?:extended\\s+(?:data\\s+)?|supplement(?:ary|al)?\\s+|supp\\.?\\s*|supporting\\s+|SI\\s+|S\\d+\\s+)fig(?:ure|\\.)?\\s*\\.?\\s*${figNum}(?=[^\\d]|$)`, 'gi'
+    );
 
-  // 페이지 → canvas 렌더 (1.3 scale)
-  const SCALE = 1.3;
-  async function renderPage(pd) {
-    const vp = pd.page.getViewport({ scale: SCALE });
-    const c = document.createElement('canvas');
-    c.width = vp.width; c.height = vp.height;
-    await pd.page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
-    return c;
-  }
+    // References 이전 페이지만 후보 (main figure 영역)
+    const mainPages = pageIndex.filter(p => p.pageNum < refsBoundary && figPat.test(p.text));
+    // fallback: References 경계를 못 찾았거나 main에 후보가 없으면 전체
+    const pool = mainPages.length ? mainPages : pageIndex.filter(p => figPat.test(p.text));
+    if (!pool.length) return null;
 
-  // Figure 카드 생성 (table 교체)
-  const fragment = document.createDocumentFragment();
-  for (const row of rows) {
-    const cells = Array.from(row.querySelectorAll('td'));
-    if (!cells.length) continue;
+    let bestPage = null;
+    let bestScore = -Infinity;
+    const debugScores = [];
 
-    const panelText = (panelIdx >= 0 ? cells[panelIdx] : cells[0])?.textContent.trim() || '';
-    const figMatch = panelText.match(/fig(?:ure|\.?)\.?\s*(\d+)/i);
-    const figNum = figMatch ? parseInt(figMatch[1]) : null;
+    for (const p of pool) {
+      let score = 0;
+      const d = {};
 
-    const card = document.createElement('div');
-    card.className = 'figure-card';
+      // (A) 캡션 시작 패턴: 0~50 (최우선, 결정적 시그널)
+      const cleanText = p.text.replace(suppRefPat, '');
+      if (captionPat.test(cleanText)) {
+        score += 50;
+        d.cap = 'caption';
+      } else if (figPat.test(cleanText)) {
+        score += 5;
+        d.cap = 'mention';
+      } else {
+        d.cap = 'supp-only';
+      }
 
-    // 이미지 섹션
-    if (figNum !== null) {
-      const pd = findPageForFig(figNum);
-      if (pd) {
-        const imgWrap = document.createElement('div');
-        imgWrap.className = 'figure-card-img';
-        const canvas = await renderPage(pd);
-        canvas.title = `p.${pd.pageNum} — 클릭하여 확대`;
-        canvas.addEventListener('click', () => openFigureFullView(pd));
-        const pgLbl = document.createElement('span');
-        pgLbl.className = 'figure-card-page-label';
-        pgLbl.textContent = `p.${pd.pageNum}`;
-        imgWrap.appendChild(canvas);
-        imgWrap.appendChild(pgLbl);
-        card.appendChild(imgWrap);
+      // (B) 텍스트 밀도 역점수: 0~20 (figure 페이지는 본문보다 텍스트가 적음)
+      let txtScore = 0;
+      if (p.textLength < 300) txtScore = 15;
+      else if (p.textLength < 800) txtScore = 20;
+      else if (p.textLength < 1500) txtScore = 12;
+      else txtScore = 3;
+      score += txtScore;
+      d.txt = txtScore;
+
+      // (C) Figure N 언급 밀도: 해당 figNum이 몇 번 언급되는지 (캡션 페이지는 자세한 설명이 있어 언급 多)
+      const figMentionCount = (cleanText.match(figPat) || []).length;
+      if (figMentionCount >= 3) { score += 10; d.density = 'high'; }
+      else if (figMentionCount >= 2) { score += 5; d.density = 'mid'; }
+
+      // (D) 감점: 첫 페이지 (title/abstract)
+      if (p.pageNum === 1) {
+        score -= 20;
+        d.pen = 'p1';
+      }
+
+      // (E) 감점: 본문에서 여러 figure를 동시에 언급 (results 본문일 가능성)
+      const allFigMentions = p.text.match(/\bfig(?:ure|\.)?\s*\.?\s*\d+/gi);
+      if (allFigMentions && allFigMentions.length >= 5) {
+        score -= 10;
+        d.pen = (d.pen || '') + ' multi-fig';
+      }
+
+      debugScores.push({ pn: p.pageNum, score: score.toFixed(0), ...d });
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestPage = p;
       }
     }
 
-    // 정보 섹션 (table row 내용)
-    const info = document.createElement('div');
-    info.className = 'figure-card-info';
-    headers.forEach((hdr, ci) => {
-      const val = cells[ci]?.innerHTML || '';
-      if (!val.trim()) return;
-      const line = document.createElement('div');
-      line.className = 'figure-card-row';
-      line.innerHTML = `<span class="figure-card-key">${escapeHtml(hdr)}</span><span class="figure-card-val">${val}</span>`;
-      info.appendChild(line);
-    });
-    card.appendChild(info);
-    fragment.appendChild(card);
+    console.log(`[FIG-SCORE] Fig ${figNum}:`, debugScores.sort((a,b) => b.score - a.score).slice(0, 5));
+    return bestPage;
   }
 
+  // ── HiDPI + 캡션 크롭 렌더링 ───────────────────────────────
+  const BASE_SCALE = 1.8; // CSS 기준 배율 (DPR은 별도 적용)
+
+  // "Figure N" / "Fig. N" 캡션의 canvas Y좌표(위에서부터)를 반환
+  // pdf.js는 "Fig.", " ", "5" 를 별도 item으로 분리할 수 있으므로
+  // 인접 item들을 같은 Y좌표 기준으로 합쳐서 매칭한다
+  function findCaptionY(page, figNum, scale, textItems) {
+    const vp1 = page.getViewport({ scale: 1 });
+    const pageH = vp1.height;
+    const items = (textItems || []).filter(it => 'str' in it);
+    if (!items.length) return null;
+
+    // 캡션 패턴: "Fig. N" / "Figure N" (Extended Data 아닌 것만)
+    const captionPat = new RegExp(`(?:^|\\s)Fig(?:ure|\\.)?\\s*\\.?\\s*${figNum}\\b`, 'i');
+    const extPat = new RegExp(`extended|supplementary|supp\\.?`, 'i');
+
+    // 방법 1: 개별 item 매칭 (빠름)
+    for (const item of items) {
+      const s = item.str.trim();
+      if (captionPat.test(s) && !extPat.test(s)) {
+        const canvasY = (pageH - item.transform[5]) * scale;
+        const ratio = canvasY / (pageH * scale);
+        if (ratio >= 0.20 && ratio <= 0.95) return canvasY;
+      }
+    }
+
+    // 방법 2: 같은 Y좌표(±3pt) 인접 item을 합쳐서 매칭
+    // pdf.js가 "Fig." "5" "|" "Title" 를 별도 item으로 분리하는 경우 대비
+    for (let i = 0; i < items.length; i++) {
+      const baseY = items[i].transform[5];
+      let concat = '';
+      let j = i;
+      // 같은 줄(Y좌표 ±3pt)의 연속 item을 합침
+      while (j < items.length && Math.abs(items[j].transform[5] - baseY) < 3) {
+        concat += items[j].str;
+        j++;
+      }
+      if (captionPat.test(concat) && !extPat.test(concat)) {
+        const canvasY = (pageH - baseY) * scale;
+        const ratio = canvasY / (pageH * scale);
+        if (ratio >= 0.20 && ratio <= 0.95) return canvasY;
+      }
+    }
+
+    return null;
+  }
+
+  // figure 썸네일: HiDPI 렌더 + 캡션 위에서 크롭
+  async function renderPage(pd, figNum = null) {
+    const dpr = window.devicePixelRatio || 1;
+    const physScale = BASE_SCALE * dpr;
+    const vp = pd.page.getViewport({ scale: physScale });
+    const cssVp = pd.page.getViewport({ scale: BASE_SCALE });
+
+    // 캡션 위치는 캐시된 textItems로 동기 계산 (네트워크 호출 없음)
+    const captionCssY = figNum !== null ? findCaptionY(pd.page, figNum, BASE_SCALE, pd.textItems) : null;
+
+    // 페이지 렌더링
+    const fullCanvas = document.createElement('canvas');
+    fullCanvas.width = Math.round(vp.width);
+    fullCanvas.height = Math.round(vp.height);
+    await pd.page.render({ canvasContext: fullCanvas.getContext('2d'), viewport: vp }).promise;
+
+    const cssW = cssVp.width;
+    const cssH = cssVp.height;
+
+    // 크롭 여부 결정: 캡션이 페이지 상단 20% ~ 하단 5% 사이에 있을 때만 크롭
+    let cropCssH = null;
+    if (captionCssY !== null) {
+      const ratio = captionCssY / cssH;
+      if (ratio >= 0.20 && ratio <= 0.95) {
+        cropCssH = Math.round(captionCssY + 6); // 캡션 상단에서 6px 여유
+      }
+    }
+
+    if (cropCssH === null) {
+      // 크롭 없음: CSS 크기만 지정하고 전체 반환
+      fullCanvas.style.width = `${cssW}px`;
+      fullCanvas.style.height = `${cssH}px`;
+      return fullCanvas;
+    }
+
+    // 크롭: 상단 cropCssH만큼만 새 캔버스에 복사
+    const physCropH = Math.round(cropCssH * dpr);
+    const physW = Math.round(cssW * dpr);
+    const cropped = document.createElement('canvas');
+    cropped.width = physW;
+    cropped.height = physCropH;
+    cropped.style.width = `${cssW}px`;
+    cropped.style.height = `${cropCssH}px`;
+    cropped.getContext('2d').drawImage(fullCanvas, 0, 0, physW, physCropH, 0, 0, physW, physCropH);
+    return cropped;
+  }
+
+  // ── Figure 번호 추출 헬퍼 ──────────────────────────────────
+  // panelText: "1a", "1b", "2c", "Fig 1a", "Figure 2b" 등 모두 대응
+  function extractFigNum(panelText) {
+    // 순수 숫자+알파벳 형태: "1a", "12b", "3" 등
+    const plain = panelText.match(/^(\d+)[a-z]?$/i);
+    if (plain) return parseInt(plain[1]);
+    // "Fig 1a", "Figure 2b", "fig.3a" 형태
+    const labeled = panelText.match(/fig(?:ure|\.?)\.?\s*(\d+)/i);
+    if (labeled) return parseInt(labeled[1]);
+    return null;
+  }
+
+  // ── rows를 figure 번호 단위로 그루핑 ────────────────────────
+  // 순서 유지를 위해 Map 사용 (insertion order 보장)
+  const figGroups = new Map(); // figNum → { pd, rows: [{cells, panelText}] }
+
+  for (const row of rows) {
+    const cells = Array.from(row.querySelectorAll('td'));
+    if (!cells.length) continue;
+    const panelText = (panelIdx >= 0 ? cells[panelIdx] : cells[0])?.textContent.trim() || '';
+    const figNum = extractFigNum(panelText);
+    console.log('[FIG-DEBUG] panelText:', panelText, '→ figNum:', figNum);
+    if (figNum === null) continue;
+    if (!figGroups.has(figNum)) {
+      const pd = findPageForFig(figNum);
+      if (pd) {
+        console.log(`[FIG-MATCH] Fig ${figNum} → p.${pd.pageNum} (txt:${pd.textLength})`);
+      } else {
+        console.log(`[FIG-MATCH] Fig ${figNum} → NULL`);
+      }
+      figGroups.set(figNum, { pd, rows: [] });
+    }
+    figGroups.get(figNum).rows.push({ cells, panelText });
+  }
+
+  // ── Figure 순서 보정: Fig N은 Fig N-1보다 앞 페이지에 올 수 없음 ──
+  const figNums = Array.from(figGroups.keys()).sort((a, b) => a - b);
+  for (let i = 1; i < figNums.length; i++) {
+    const prev = figGroups.get(figNums[i - 1]);
+    const curr = figGroups.get(figNums[i]);
+    if (prev?.pd && curr?.pd && curr.pd.pageNum < prev.pd.pageNum) {
+      console.log(`[FIG-ORDER] Fig ${figNums[i]} (p.${curr.pd.pageNum}) < Fig ${figNums[i-1]} (p.${prev.pd.pageNum}) → 재탐색`);
+      // 이전 figure 페이지 이후에서만 다시 찾기
+      const figPat = new RegExp(`\\bfig(?:ure|\\.)?\\s*\\.?\\s*${figNums[i]}(?=[^\\d]|$)`, 'i');
+      const laterPages = pageIndex.filter(p =>
+        p.pageNum >= prev.pd.pageNum && p.pageNum < refsBoundary && figPat.test(p.text)
+      );
+      if (laterPages.length) {
+        // 텍스트가 가장 짧은 페이지 선택 (figure 페이지는 텍스트가 적음)
+        const best = laterPages.reduce((a, b) => a.textLength <= b.textLength ? a : b);
+        curr.pd = best;
+        console.log(`[FIG-ORDER] Fig ${figNums[i]} 재배정 → p.${best.pageNum}`);
+      }
+    }
+  }
+
+  // ── 모든 figure의 canvas를 병렬 렌더링 ────────────────────────
+  const figEntries = Array.from(figGroups.entries());
+  const canvasMap = new Map();
+  const totalFigs = figEntries.filter(([, g]) => g.pd).length;
+  updateLoading(60, `Figure ${totalFigs}개 매칭 완료 — 이미지 렌더링 중...`);
+  const renderT0 = performance.now();
+  let rendered = 0;
+  await Promise.all(figEntries.map(async ([figNum, group]) => {
+    if (group.pd) {
+      canvasMap.set(figNum, await renderPage(group.pd, figNum));
+      rendered++;
+      updateLoading(60 + Math.round((rendered / totalFigs) * 35), `Figure 렌더링 중... (${rendered}/${totalFigs})`);
+    }
+  }));
+  console.log(`[FIG-RENDER] ${canvasMap.size}개 figure 렌더 완료 (${(performance.now()-renderT0).toFixed(0)}ms)`);
+
+  // ── figure 번호당 section(이미지 1개 + 테이블 1개) DOM 생성 ────
+  const fragment = document.createDocumentFragment();
+
+  for (const [figNum, group] of figEntries) {
+    const section = document.createElement('div');
+    section.className = 'figure-section';
+
+    // 이미지 래퍼 (병렬 렌더 완료된 canvas 사용)
+    const canvas = canvasMap.get(figNum);
+    if (canvas && group.pd) {
+      const imgWrap = document.createElement('div');
+      imgWrap.className = 'figure-section-img-wrap';
+      canvas.title = `Fig ${figNum} — p.${group.pd.pageNum} — 클릭하여 확대/축소`;
+      canvas.addEventListener('click', () => toggleFigureZoom(imgWrap, group.pd));
+      const pgLbl = document.createElement('span');
+      pgLbl.className = 'figure-section-page-label';
+      pgLbl.textContent = `Fig ${figNum}  ·  p.${group.pd.pageNum}`;
+      imgWrap.appendChild(canvas);
+      imgWrap.appendChild(pgLbl);
+      section.appendChild(imgWrap);
+    }
+
+    // 패널 테이블 (해당 figure의 모든 row)
+    const table = document.createElement('table');
+    table.className = 'figure-panel-table';
+
+    // thead
+    const thead = document.createElement('thead');
+    const hRow = document.createElement('tr');
+    headers.forEach(hdr => {
+      const th = document.createElement('th');
+      th.textContent = hdr;
+      hRow.appendChild(th);
+    });
+    thead.appendChild(hRow);
+    table.appendChild(thead);
+
+    // tbody
+    const tbody = document.createElement('tbody');
+    for (const { cells } of group.rows) {
+      const tr = document.createElement('tr');
+      headers.forEach((_, ci) => {
+        const td = document.createElement('td');
+        // Panel 컬럼(첫 번째)에 panel-id 클래스 부여
+        if (ci === (panelIdx >= 0 ? panelIdx : 0)) td.className = 'panel-id';
+        td.innerHTML = cells[ci]?.innerHTML || '';
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    section.appendChild(table);
+
+    fragment.appendChild(section);
+  }
+
+  updateLoading(100, `완료 — Figure ${canvasMap.size}개 로드됨`);
+  await new Promise(r => setTimeout(r, 400)); // 완료 상태를 잠깐 보여줌
   loadingEl.remove();
   tableEl.replaceWith(fragment);
 }
 
-function openFigureFullView(pd) {
-  let overlay = document.getElementById('fig-full-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'fig-full-overlay';
-    overlay.className = 'fig-full-overlay';
-    overlay.innerHTML = `
-      <div class="fig-overlay-bg"></div>
-      <div class="fig-overlay-inner">
-        <canvas class="fig-overlay-canvas"></canvas>
-        <button class="fig-overlay-close">&times;</button>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-    overlay.querySelector('.fig-overlay-bg').addEventListener('click', () => overlay.style.display = 'none');
-    overlay.querySelector('.fig-overlay-close').addEventListener('click', () => overlay.style.display = 'none');
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && overlay.style.display !== 'none') overlay.style.display = 'none';
-    });
+// 인라인 확대/축소: 클릭하면 전체 페이지(캡션 포함)를 HiDPI로 표시
+async function toggleFigureZoom(imgWrap, pd) {
+  const isZoomed = imgWrap.classList.contains('zoomed');
+
+  if (isZoomed) {
+    imgWrap.classList.remove('zoomed');
+    imgWrap.querySelector('.figure-zoom-canvas')?.remove();
+    const orig = imgWrap.querySelector('canvas:not(.figure-zoom-canvas)');
+    if (orig) orig.style.display = '';
+    return;
   }
-  const canvas = overlay.querySelector('.fig-overlay-canvas');
-  const vp = pd.page.getViewport({ scale: 2.2 });
-  canvas.width = vp.width;
-  canvas.height = vp.height;
-  pd.page.render({ canvasContext: canvas.getContext('2d'), viewport: vp });
-  overlay.style.display = 'flex';
+
+  imgWrap.classList.add('zoomed');
+  const orig = imgWrap.querySelector('canvas:not(.figure-zoom-canvas)');
+  if (orig) orig.style.display = 'none';
+
+  // 줌: DPR 반영 + 전체 페이지 (캡션 포함, 크롭 없음)
+  const dpr = window.devicePixelRatio || 1;
+  const ZOOM_SCALE = 2.5;
+  const physScale = ZOOM_SCALE * dpr;
+  const vp = pd.page.getViewport({ scale: physScale });
+  const cssVp = pd.page.getViewport({ scale: ZOOM_SCALE });
+
+  const c = document.createElement('canvas');
+  c.className = 'figure-zoom-canvas';
+  c.width = Math.round(vp.width);
+  c.height = Math.round(vp.height);
+  c.style.width = `${cssVp.width}px`;
+  c.style.height = `${cssVp.height}px`;
+  c.title = '클릭하여 축소';
+  c.addEventListener('click', () => toggleFigureZoom(imgWrap, pd));
+  imgWrap.insertBefore(c, imgWrap.querySelector('.figure-section-page-label'));
+  await pd.page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
 }
 
 async function retryLast() {
@@ -1415,14 +1881,15 @@ document.addEventListener("keydown", (e) => {
   if (mod && e.key === ",") { e.preventDefault(); settingsBtn.click(); }
   // Escape: abort response or close modal/sidebar
   if (e.key === "Escape") {
-    if (settingsModal.style.display === "flex") { settingsModal.style.display = "none"; }
+    if (paperSearchModal.style.display === "flex") { closePaperSearchModal(); }
+    else if (settingsModal.style.display === "flex") { settingsModal.style.display = "none"; }
     else if (sidebar.classList.contains("open")) { sidebar.classList.remove("open"); }
     else if (sending) { abortResponse(); }
   }
 });
 
 // --- Bookmark functions ---
-function addBookmarkBtn(messageEl, text) {
+function addBookmarkBtn(messageEl, text, pdfUrl = null) {
   if (!text || !text.trim()) return;
   // Create a dedicated action bar below the message content
   const actionBar = document.createElement("div");
@@ -1434,10 +1901,12 @@ function addBookmarkBtn(messageEl, text) {
   btn.addEventListener("click", async () => {
     const title = text.substring(0, 80).split("\n")[0];
     try {
+      const payload = { session_id: sessionId, title, content: text };
+      if (pdfUrl) payload.pdfUrl = pdfUrl;
       const resp = await fetch("/api/bookmarks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId, title, content: text }),
+        body: JSON.stringify(payload),
       });
       if (!resp.ok) throw new Error("Save failed");
       btn.classList.add("bookmarked");
@@ -1485,7 +1954,11 @@ async function loadBookmarks() {
       `;
       item.querySelector(".conv-item-text").addEventListener("click", () => {
         messagesEl.innerHTML = "";
-        addMessage("assistant", b.content);
+        const div = addMessage("assistant", b.content);
+        if (b.pdfUrl) {
+          const contentEl = div.querySelector('.message-content');
+          if (contentEl) renderPdfFigureGallery(contentEl, b.pdfUrl);
+        }
         sidebar.classList.remove("open");
       });
       item.querySelector(".conv-item-delete").addEventListener("click", async (e) => {

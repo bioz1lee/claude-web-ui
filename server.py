@@ -11,6 +11,12 @@ import sys
 import uuid
 import mimetypes
 import io
+import datetime
+import time
+import urllib.request
+import urllib.parse
+import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor
 
 PORT = 8321
 HOST = "127.0.0.1"
@@ -30,6 +36,55 @@ os.makedirs(HISTORY_DIR, exist_ok=True)
 # Track running processes for abort support
 active_procs = {}  # session_id -> subprocess.Popen
 active_procs_lock = threading.Lock()
+
+# Paper search cache: key -> {"ts": float, "data": dict}
+_paper_cache = {}
+_PAPER_CACHE_TTL = 300  # 5 minutes
+
+# Known predatory publishers to exclude from results
+_PREDATORY_PUBLISHERS = frozenset([
+    "omics group", "omics international", "omics publishing group",
+    "scientific research publishing", "scirp",
+    "iomcworld", "waset",
+    "world academy of science engineering and technology",
+])
+
+# High-impact journal tier list (55 journals, key=lowercase)
+_JOURNAL_TIER = {
+    # Tier 1 — CNS
+    "nature": 1, "science": 1, "cell": 1,
+    # Tier 2 — Nature family
+    "nature medicine": 2, "nature genetics": 2, "nature methods": 2,
+    "nature biotechnology": 2, "nature cell biology": 2, "nature neuroscience": 2,
+    "nature immunology": 2, "nature chemical biology": 2,
+    "nature structural & molecular biology": 2, "nature structural and molecular biology": 2,
+    "nature communications": 2, "nature reviews genetics": 2,
+    "nature reviews molecular cell biology": 2, "nature microbiology": 2, "nature metabolism": 2,
+    # Tier 2 — Cell family
+    "molecular cell": 2, "cell stem cell": 2, "developmental cell": 2,
+    "cell reports": 2, "cell host & microbe": 2, "cell host and microbe": 2,
+    "cell systems": 2, "cell metabolism": 2,
+    # Tier 2 — Science family
+    "science advances": 2, "science translational medicine": 2,
+    "science immunology": 2, "science signaling": 2,
+    # Tier 2 — Top medical
+    "the new england journal of medicine": 2, "new england journal of medicine": 2,
+    "the lancet": 2, "lancet": 2, "jama": 2, "bmj": 2, "bmj (clinical research ed.)": 2,
+    # Tier 3 — Top life sciences
+    "proceedings of the national academy of sciences of the united states of america": 3,
+    "proc natl acad sci u s a": 3, "pnas": 3,
+    "the embo journal": 3, "embo journal": 3, "elife": 3,
+    "genome research": 3, "genome biology": 3, "nucleic acids research": 3,
+    "bioinformatics": 3, "plos biology": 3, "current biology": 3,
+    "annual review of biochemistry": 3, "annual review of cell and developmental biology": 3,
+    "annual review of genetics": 3, "annual review of genomics and human genetics": 3,
+    "molecular biology and evolution": 3, "trends in biochemical sciences": 3,
+    "trends in cell biology": 3, "trends in genetics": 3,
+    "molecular systems biology": 3, "plos genetics": 3, "bmc biology": 3,
+    "journal of clinical investigation": 3, "the journal of clinical investigation": 3,
+    "nature protocols": 3, "briefings in bioinformatics": 3, "genome medicine": 3,
+}
+_DEFAULT_TIER = 99
 
 # Lock for conversations.json read/write
 conversations_lock = threading.Lock()
@@ -60,6 +115,8 @@ class ChatHandler(http.server.BaseHTTPRequestHandler):
             self._handle_get_messages(sid)
         elif path == "/api/bookmarks":
             self._handle_get_bookmarks()
+        elif path == "/api/paper-search":
+            self._handle_paper_search()
         else:
             self.send_error(404)
 
@@ -304,6 +361,57 @@ class ChatHandler(http.server.BaseHTTPRequestHandler):
                     ChatHandler._save_conversations(convos)
                     return
 
+    WIKI_DIR = os.path.join(os.path.expanduser("~"), "Documents", "Obsidian Vault", "Wiki")
+
+    @staticmethod
+    def _update_wiki_async(assistant_response, sse_writer):
+        """Background thread: update LLM-Wiki from paper study results."""
+        wiki_dir = ChatHandler.WIKI_DIR
+        topics_dir = os.path.join(wiki_dir, "topics")
+        index_path = os.path.join(wiki_dir, "index.md")
+        if not os.path.isdir(topics_dir):
+            return
+        try:
+            # Read existing topics for context
+            existing_topics = []
+            for f in os.listdir(topics_dir):
+                if f.endswith(".md"):
+                    existing_topics.append(f)
+
+            prompt = (
+                "아래는 Paper Study로 분석한 논문 내용이야. "
+                "이 내용을 바탕으로 Obsidian Wiki를 업데이트해줘.\n\n"
+                "## 규칙\n"
+                f"- 위키 토픽 폴더: {topics_dir}\n"
+                f"- 위키 인덱스: {index_path}\n"
+                f"- 기존 토픽 파일들: {', '.join(existing_topics) if existing_topics else '없음'}\n"
+                "- 기존 토픽이 있으면 내용을 병합 (중복 금지). 기존 파일을 먼저 읽고 업데이트.\n"
+                "- 새 토픽이 필요하면 생성\n"
+                "- 각 토픽 문서의 sources 필드와 본문 하단에 출처 논문을 [[링크]]로 표시\n"
+                "- index.md의 Topics 섹션과 '통합된 논문' 목록도 갱신\n"
+                "- 토픽 파일명은 kebab-case (예: single-cell-rna-seq.md)\n"
+                "- frontmatter에 title, tags, updated (오늘 날짜), sources 포함\n"
+                "- 한국어로 작성\n\n"
+                "## 논문 분석 내용\n\n"
+                f"{assistant_response[:15000]}"
+            )
+            result = subprocess.run(
+                ["claude", "-p", "--dangerously-skip-permissions",
+                 "--model", "claude-sonnet-4-6", "--max-turns", "5"],
+                input=prompt,
+                capture_output=True,
+                text=True,
+                timeout=120,
+                cwd=os.path.expanduser("~"),
+            )
+            if result.returncode == 0:
+                try:
+                    sse_writer({"type": "text", "text": "\n\n---\n> Wiki 자동 업데이트 완료"})
+                except Exception:
+                    pass
+        except Exception:
+            pass  # Wiki update is best-effort
+
     @staticmethod
     def _generate_title_async(session_id, user_message, assistant_response, sse_writer):
         """Background thread: generate a smart title using Claude Haiku."""
@@ -424,6 +532,8 @@ class ChatHandler(http.server.BaseHTTPRequestHandler):
             "content": data.get("content", ""),
             "created_at": datetime.datetime.now().isoformat(),
         }
+        if data.get("pdfUrl"):
+            bookmark["pdfUrl"] = data["pdfUrl"]
         bookmarks = self._load_bookmarks()
         bookmarks.insert(0, bookmark)
         self._save_bookmarks_file(bookmarks)
@@ -498,6 +608,187 @@ class ChatHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(resp_body)
 
+    def _send_json(self, data, code=200):
+        """Send a JSON response."""
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        resp = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        self.send_header("Content-Length", len(resp))
+        self.end_headers()
+        self.wfile.write(resp)
+
+    def _handle_paper_search(self):
+        """Search PubMed and enrich with Crossref citation counts."""
+        params = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
+        q = params.get("q", [None])[0]
+        if not q or not q.strip():
+            self._send_json_error(400, "검색어를 입력해주세요")
+            return
+
+        q = q.strip()
+        max_results = min(int(params.get("max", ["10"])[0]), 50)
+        sort_by = params.get("sort", ["relevance"])[0]
+        if sort_by not in ("relevance", "date", "citations", "journal"):
+            sort_by = "relevance"
+        years = params.get("years", ["all"])[0]
+        if years not in ("all", "3", "5", "10"):
+            years = "all"
+        review = params.get("review", ["0"])[0]
+        if review not in ("0", "1"):
+            review = "0"
+        cache_key = f"{q}|{max_results}|{sort_by}|{years}|{review}"
+
+        cached = _paper_cache.get(cache_key)
+        if cached and (time.time() - cached["ts"] < _PAPER_CACHE_TTL):
+            self._send_json(cached["data"])
+            return
+
+        try:
+            ncbi_key = os.environ.get("NCBI_API_KEY", "")
+
+            # Step 1: esearch — get PMID list
+            search_term = q
+            if review == "1":
+                search_term = f"{q} AND Review[pt]"
+            search_params = {"db": "pubmed", "term": search_term, "retmax": str(max_results), "retmode": "json"}
+            if sort_by == "date":
+                search_params["sort"] = "date"
+            if years != "all":
+                current_year = datetime.date.today().year
+                min_year = current_year - int(years)
+                search_params["datetype"] = "pdat"
+                search_params["mindate"] = f"{min_year}/01/01"
+                search_params["maxdate"] = f"{current_year}/12/31"
+            if ncbi_key:
+                search_params["api_key"] = ncbi_key
+            search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?" + urllib.parse.urlencode(search_params)
+            req = urllib.request.Request(search_url, headers={"User-Agent": "claude-web-ui/1.0"})
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                search_data = json.loads(resp.read().decode("utf-8"))
+
+            pmids = search_data.get("esearchresult", {}).get("idlist", [])
+            if not pmids:
+                result = {"query": q, "total": 0, "papers": []}
+                _paper_cache[cache_key] = {"ts": time.time(), "data": result}
+                self._send_json(result)
+                return
+
+            # Step 2: efetch — get full metadata as XML
+            time.sleep(0.35)  # respect 3 req/s rate limit
+            fetch_params = {"db": "pubmed", "id": ",".join(pmids), "retmode": "xml", "rettype": "abstract"}
+            if ncbi_key:
+                fetch_params["api_key"] = ncbi_key
+            fetch_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" + urllib.parse.urlencode(fetch_params)
+            req2 = urllib.request.Request(fetch_url, headers={"User-Agent": "claude-web-ui/1.0"})
+            with urllib.request.urlopen(req2, timeout=20) as resp2:
+                xml_data = resp2.read().decode("utf-8")
+
+            # Step 3: parse XML
+            root = ET.fromstring(xml_data)
+            papers = []
+            for article in root.findall(".//PubmedArticle"):
+                medline = article.find("MedlineCitation")
+                if medline is None:
+                    continue
+                art = medline.find("Article")
+                if art is None:
+                    continue
+
+                title_el = art.find("ArticleTitle")
+                title = "".join(title_el.itertext()).strip() if title_el is not None else ""
+
+                journal = art.findtext("Journal/Title", "")
+                year = (art.findtext("Journal/JournalIssue/PubDate/Year") or
+                        art.findtext("Journal/JournalIssue/PubDate/MedlineDate", "")[:4])
+
+                # Authors + first-author affiliation
+                authors = []
+                affiliation = ""
+                for i, author in enumerate(art.findall("AuthorList/Author")):
+                    last = author.findtext("LastName", "")
+                    fore = author.findtext("ForeName", "")
+                    if last:
+                        initials = f" {fore[0]}." if fore else ""
+                        authors.append(f"{last}{initials}")
+                    if i == 0 and not affiliation:
+                        aff_el = author.find("AffiliationInfo/Affiliation")
+                        if aff_el is not None:
+                            affiliation = "".join(aff_el.itertext()).strip()
+
+                # DOI
+                doi = None
+                for id_el in article.findall(".//ArticleId"):
+                    if id_el.get("IdType") == "doi":
+                        doi = id_el.text
+                        break
+
+                pmid = medline.findtext("PMID", "")
+
+                # Abstract (structured or plain)
+                abstract_parts = []
+                for ab in art.findall(".//AbstractText"):
+                    label = ab.get("Label")
+                    text = "".join(ab.itertext()).strip()
+                    if label and text:
+                        abstract_parts.append(f"{label}: {text}")
+                    elif text:
+                        abstract_parts.append(text)
+                abstract = " ".join(abstract_parts)
+
+                # Skip predatory publishers
+                journal_lower = journal.lower()
+                if any(kw in journal_lower for kw in _PREDATORY_PUBLISHERS):
+                    continue
+
+                papers.append({
+                    "pmid": pmid,
+                    "title": title,
+                    "authors": authors,
+                    "affiliation": affiliation[:150] if affiliation else "",
+                    "journal": journal,
+                    "year": year,
+                    "doi": doi,
+                    "abstract": abstract[:1000] if abstract else "",
+                    "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
+                    "citations": None,
+                })
+
+            # Step 4: enrich with citation counts from Crossref (parallel)
+            def fetch_citations(paper):
+                doi = paper.get("doi")
+                if not doi:
+                    return paper
+                try:
+                    encoded = urllib.parse.quote(doi, safe="")
+                    url = f"https://api.crossref.org/works/{encoded}?mailto=claude-web-ui@local"
+                    req = urllib.request.Request(url, headers={"User-Agent": "claude-web-ui/1.0"})
+                    with urllib.request.urlopen(req, timeout=5) as resp:
+                        data = json.loads(resp.read().decode("utf-8"))
+                        paper["citations"] = data.get("message", {}).get("is-referenced-by-count")
+                except Exception:
+                    pass
+                return paper
+
+            with ThreadPoolExecutor(max_workers=5) as pool:
+                papers = list(pool.map(fetch_citations, papers))
+
+            # Step 5: sort
+            if sort_by == "citations":
+                papers.sort(key=lambda p: (p["citations"] is None, -(p["citations"] or 0)))
+            elif sort_by == "journal":
+                papers.sort(key=lambda p: (
+                    _JOURNAL_TIER.get(p["journal"].lower(), _DEFAULT_TIER),
+                    p["citations"] is None,
+                    -(p["citations"] or 0),
+                ))
+
+            result = {"query": q, "total": len(papers), "papers": papers}
+            _paper_cache[cache_key] = {"ts": time.time(), "data": result}
+            self._send_json(result)
+
+        except Exception as e:
+            self._send_json_error(500, f"검색 중 오류가 발생했습니다: {str(e)}")
+
     def _send_json_error(self, code, message):
         """Send a JSON error response."""
         self.send_response(code)
@@ -540,6 +831,7 @@ class ChatHandler(http.server.BaseHTTPRequestHandler):
 
         model = data.get("model", "")
         system_prompt = data.get("system_prompt", "")
+        is_paper_study = data.get("paper_study", False)
 
         # Build command — full Claude Code with all tools, no permission prompts
         cmd = [
@@ -672,6 +964,17 @@ class ChatHandler(http.server.BaseHTTPRequestHandler):
                                 args=(result_sid, message, assistant_full, sse_writer),
                                 daemon=True,
                             ).start()
+                        # Auto-update wiki after paper study
+                        if is_paper_study:
+                            wiki_text = "".join(assistant_text_parts)
+                            if not wiki_text and text:
+                                wiki_text = text
+                            if wiki_text:
+                                threading.Thread(
+                                    target=self._update_wiki_async,
+                                    args=(wiki_text, self._send_sse),
+                                    daemon=True,
+                                ).start()
 
                 except json.JSONDecodeError:
                     continue
