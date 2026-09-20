@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>을지대 약술형 논술 예상문제</title>
+<style>
+@page { size: A4; margin: 17mm 16mm 16mm 16mm; }
+* { box-sizing: border-box; }
+body { font-family: "NanumBarunGothic","NanumGothic",sans-serif; font-size: 10.2pt; line-height: 1.62; color: #16181d; margin: 0; }
+.serif { font-family: "NanumMyeongjo", serif; }
+h1,h2,h3,h4 { margin: 0; font-weight: 700; }
+.page-break { page-break-before: always; }
+.avoid { page-break-inside: avoid; }
+
+/* ---- cover ---- */
+.cover { height: 252mm; display: flex; flex-direction: column; justify-content: center; }
+.cover .rule { height: 5px; background: #1d3f6e; width: 72px; margin-bottom: 18px; }
+.cover .kicker { font-size: 11pt; letter-spacing: 3px; color: #1d3f6e; font-weight: 700; }
+.cover h1 { font-size: 30pt; line-height: 1.32; margin: 14px 0 6px; letter-spacing: -1px; }
+.cover h2 { font-size: 14pt; color: #4a5566; font-weight: 400; margin-bottom: 34px; }
+.cover .meta { border-top: 1px solid #cdd4de; padding-top: 14px; font-size: 9.6pt; color: #4a5566; }
+.cover .meta b { color: #16181d; }
+.cover .spec { margin: 26px 0 34px; border: 1px solid #1d3f6e; }
+.cover .spec div { display: flex; border-bottom: 1px solid #dde2ea; }
+.cover .spec div:last-child { border-bottom: 0; }
+.cover .spec span:first-child { width: 96px; background: #eef2f8; color: #1d3f6e; font-weight: 700; padding: 7px 10px; font-size: 9.4pt; }
+.cover .spec span:last-child { padding: 7px 12px; font-size: 9.8pt; }
+
+/* ---- section heads ---- */
+.part { border-left: 6px solid #1d3f6e; padding: 2px 0 2px 12px; margin: 0 0 16px; }
+.part .n { font-size: 8.8pt; letter-spacing: 2px; color: #1d3f6e; font-weight: 700; }
+.part h2 { font-size: 18pt; letter-spacing: -0.6px; }
+h3.sec { font-size: 12.4pt; margin: 22px 0 9px; padding-bottom: 5px; border-bottom: 2px solid #16181d; }
+h4.sub { font-size: 10.6pt; margin: 16px 0 7px; color: #1d3f6e; }
+
+/* ---- tables ---- */
+table { width: 100%; border-collapse: collapse; font-size: 9.2pt; margin: 8px 0 12px; }
+th, td { border: 1px solid #c3cbd7; padding: 6px 7px; vertical-align: top; }
+th { background: #eef2f8; font-weight: 700; color: #1d3f6e; text-align: center; }
+td.c { text-align: center; }
+tbody tr:nth-child(even) td { background: #fafbfd; }
+
+/* ---- callouts ---- */
+.note { border: 1px solid #d8c48a; background: #fdf8ec; padding: 9px 12px; font-size: 9.2pt; margin: 10px 0; }
+.note b { color: #8a6d1d; }
+.tip { border-left: 3px solid #1d3f6e; background: #f4f7fb; padding: 8px 12px; font-size: 9.4pt; margin: 9px 0; }
+
+/* ---- exam ---- */
+.examhead { border: 2px solid #16181d; padding: 12px 14px; margin-bottom: 16px; }
+.examhead .t { font-size: 15pt; font-weight: 700; }
+.examhead .s { font-size: 9.4pt; color: #4a5566; margin-top: 4px; }
+.examhead .bar { display: flex; gap: 16px; margin-top: 9px; padding-top: 9px; border-top: 1px dashed #aab3c0; font-size: 9.2pt; }
+.examhead .bar b { color: #1d3f6e; }
+
+.q { margin: 14px 0 0; page-break-inside: avoid; }
+.q .qh { font-weight: 700; font-size: 10.4pt; margin-bottom: 5px; }
+.q .qh .no { display: inline-block; background: #1d3f6e; color: #fff; border-radius: 3px; padding: 1px 7px; margin-right: 7px; font-size: 9.4pt; }
+.q .qh .pt { float: right; font-weight: 400; font-size: 8.8pt; color: #6b7684; }
+.passage { border: 1px solid #b9c2cf; padding: 11px 13px; font-size: 9.6pt; line-height: 1.78; margin: 8px 0; background: #fcfcfd; }
+.passage .lbl { font-weight: 700; font-size: 8.8pt; color: #1d3f6e; display: block; margin-bottom: 5px; letter-spacing: 1px; }
+.poem { white-space: pre-line; font-family: "NanumMyeongjo", serif; font-size: 9.8pt; line-height: 1.75; }
+.box { border: 1px solid #16181d; padding: 8px 11px; font-size: 9.4pt; margin: 7px 0; }
+.box .lbl { font-weight: 700; display: block; margin-bottom: 4px; }
+.ans { border: 1px dashed #aab3c0; height: 46px; margin-top: 6px; position: relative; }
+.ans.tall { height: 96px; }
+.ans.work { height: 188px; }
+.ans.short { height: 26px; }
+.ans::before { content: "답"; position: absolute; top: 3px; left: 6px; font-size: 8pt; color: #98a1ae; }
+.math { font-family: "NanumMyeongjo", serif; }
+
+/* ---- solutions ---- */
+.sol { border-top: 1px solid #dde2ea; padding: 9px 0 3px; page-break-inside: avoid; }
+.sol .sh { font-weight: 700; font-size: 10pt; margin-bottom: 3px; }
+.sol .sh .no { display: inline-block; background: #16181d; color: #fff; border-radius: 3px; padding: 1px 7px; margin-right: 7px; font-size: 9.2pt; }
+.sol .a { background: #eef2f8; padding: 5px 9px; font-size: 9.4pt; margin: 4px 0; }
+.sol .a b { color: #1d3f6e; }
+.sol .e { font-size: 9.2pt; color: #333a45; }
+.footer-note { font-size: 8.4pt; color: #6b7684; border-top: 1px solid #dde2ea; margin-top: 16px; padding-top: 8px; }
+ul.tight { margin: 5px 0 5px 18px; padding: 0; }
+ul.tight li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="rule"></div>
+  <div class="kicker">EULJI UNIVERSITY</div>
+  <h1>을지대학교 약술형 논술<br>최근 3개년 유형 분석 &amp; 예상문제</h1>
+  <h2>국어 7문항 + 수학 7문항 · 70분 실전 2회분 + 정답·해설</h2>
+
+  <div class="spec">
+    <div><span>고사 유형</span><span>약술형 논술(교과 논술) — 단답형 및 짧은 서술형</span></div>
+    <div><span>문항 구성</span><span>국어 7문항 + 수학 7문항 = 총 14문항 (문항당 10점, 총 140점)</span></div>
+    <div><span>고사 시간</span><span>70분</span></div>
+    <div><span>계열 구분</span><span>인문사회계·자연계 동일 형식(공통 문제지)</span></div>
+    <div><span>출제 기조</span><span>고교 교육과정 내 출제, EBS 연계율 80% 이상</span></div>
+    <div><span>수능 최저</span><span>미적용</span></div>
+  </div>
+
+  <div class="meta">
+    <b>수록 내용</b> &nbsp;| &nbsp;Part 1 최근 3개년(2025·2026·2027학년도) 유형 분석 &nbsp;·&nbsp; Part 2 예상문제 제1회 &nbsp;·&nbsp; Part 3 예상문제 제2회 &nbsp;·&nbsp; Part 4 정답 및 해설<br>
+    <b>작성일</b> &nbsp;| &nbsp;2026. 09. 20. &nbsp;&nbsp; <b>분량</b> &nbsp;| &nbsp;실전 2회분 · 28문항
+  </div>
+</div>
+
+<!-- ============ PART 1 ============ -->
+<div class="page-break"></div>
+<div class="part"><div class="n">PART 1</div><h2>최근 3개년 출제 유형 분석</h2></div>
+
+<div class="note">
+<b>자료 출처와 한계</b><br>
+아래 표의 <b>고사 형식·문항 수·배점·시간·전형방법</b>은 공개된 입시 자료에서 교차 확인한 내용입니다.
+다만 <b>세부 출제범위 과목명(국어 선택과목 포함 여부, 수학의 미적분·확률과 통계 포함 여부)</b>과
+<b>2025학년도 전형 반영 비율</b>은 원문 대조가 불가능했습니다(을지대 입학처 사이트 직접 접근이 차단됨).
+본 자료는 약술형 논술 시행 대학의 공통 관행인 <b>국어: 독서·문학 + 화법과 작문/언어와 매체, 수학: 수학Ⅰ·수학Ⅱ</b>를
+출제범위로 <u>가정</u>하고 제작했습니다. 실제 응시 전 입학처 <b>수시모집요강</b> 및 <b>논술 가이드북</b>에서 반드시 확인하십시오.
+</div>
+
+<h3 class="sec">1-1. 연도별 시행 개요</h3>
+<table>
+<thead><tr><th style="width:15%">구분</th><th style="width:28%">2025학년도<br>(논술전형 신설)</th><th style="width:28%">2026학년도</th><th style="width:29%">2027학년도</th></tr></thead>
+<tbody>
+<tr><td class="c">전형명</td><td class="c">논술우수자</td><td class="c">논술우수자</td><td class="c">논술우수자</td></tr>
+<tr><td class="c">고사 유형</td><td class="c">약술형 논술</td><td class="c">약술형 논술</td><td class="c">약술형 논술</td></tr>
+<tr><td class="c">문항 수</td><td class="c">국어 7 + 수학 7<br>= 14문항</td><td class="c">국어 7 + 수학 7<br>= 14문항</td><td class="c">국어 7 + 수학 7<br>= 14문항</td></tr>
+<tr><td class="c">배점</td><td class="c">문항당 10점 / 140점</td><td class="c">문항당 10점 / 140점</td><td class="c">문항당 10점 / 140점</td></tr>
+<tr><td class="c">고사 시간</td><td class="c">70분</td><td class="c">70분</td><td class="c">70분</td></tr>
+<tr><td class="c">계열 구분</td><td class="c">없음(공통)</td><td class="c">없음(공통)</td><td class="c">없음(공통)</td></tr>
+<tr><td class="c">전형방법</td><td class="c">논술 + 학생부<br><span style="color:#b03a2e">(비율 미확인)</span></td><td class="c">논술 80 + 학생부 20</td><td class="c">논술 80 + 학생부 20</td></tr>
+<tr><td class="c">수능최저</td><td class="c">미적용</td><td class="c">미적용</td><td class="c">미적용</td></tr>
+<tr><td class="c">고사 운영</td><td class="c">교시 분할 시행</td><td class="c">교시 분할 시행</td><td class="c">10/16(금)·10/17(토)<br>오전 10:00~11:10<br>오후 15:00~16:10<br>27개 모집단위 / 4개 시간대</td></tr>
+</tbody>
+</table>
+
+<h3 class="sec">1-2. 3개년을 관통하는 5가지 고정 패턴</h3>
+<table>
+<thead><tr><th style="width:5%">#</th><th style="width:27%">패턴</th><th>내용과 대비 함의</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td><b>형식이 변하지 않는다</b></td><td>신설 이후 3개년 내내 <b>국어 7 + 수학 7 / 70분 / 140점</b>이 고정. 형식 변화를 예측할 필요 없이 <b>속도 훈련</b>에 자원을 몰아주는 것이 합리적.</td></tr>
+<tr><td class="c">2</td><td><b>문항당 5분 구조</b></td><td>70분 ÷ 14문항 = <b>문항당 평균 5분</b>. 국어 독서 지문 1세트(3문항)에 12분 이상을 쓰면 수학에서 시간이 붕괴. <b>국어 30분 / 수학 35분 / 검토 5분</b>이 현실적 배분.</td></tr>
+<tr><td class="c">3</td><td><b>정답이 유일하게 결정된다</b></td><td>일반 논술(자유 서술)이 아니라 <b>수능·내신 서술형에 가까운 약술형</b>. 채점은 핵심어·수식 일치 여부 중심이므로 <b>미사여구는 0점 가치</b>. 요구된 어절 수·형식 조건 위반이 최대 감점 요인.</td></tr>
+<tr><td class="c">4</td><td><b>EBS 연계 80% 이상</b></td><td>지문·소재를 새로 발굴하기보다 <b>EBS 수능특강·수능완성 수록 지문과 문학 작품</b>을 반복 회독하는 것이 효율이 가장 높음.</td></tr>
+<tr><td class="c">5</td><td><b>수능최저가 없다</b></td><td>수능 성적이 불안한 3~6등급 대에서도 <b>논술 점수만으로 역전 가능</b>한 구조. 반대로 지원자 수가 많아 <b>1~2문항이 당락을 가름</b> → 쉬운 문항 무실점이 최우선 전략.</td></tr>
+</tbody>
+</table>
+
+<h3 class="sec">1-3. 영역별 출제 구조(추정) 및 예상 출제 지점</h3>
+
+<h4 class="sub">■ 국어 7문항</h4>
+<table>
+<thead><tr><th style="width:10%">문항</th><th style="width:20%">영역</th><th style="width:34%">출제 형태</th><th>고빈도 예상 지점</th></tr></thead>
+<tbody>
+<tr><td class="c">1~3</td><td class="c">독서(비문학)<br>지문 1세트</td><td>빈칸에 들어갈 <b>핵심어 쓰기</b>, 지시 대상 찾기, 두 개념의 차이를 <b>한 문장</b>으로 서술</td><td>과학·기술(항상성, 면역, 센서, 전자기), 사회·경제(외부효과, 공공재, 계약), 인문(인식론)</td></tr>
+<tr><td class="c">4~6</td><td class="c">문학<br>(현대시·고전·소설)</td><td>표현법 명칭 쓰기, 시어의 함축적 의미, 인물의 심리·서술 시점, 아이러니 설명</td><td>역설·반어·의인·수미상관·객관적 상관물 / 1인칭 관찰자·전지적 작가 / 상황적 아이러니</td></tr>
+<tr><td class="c">7</td><td class="c">문법<br>(언어와 매체)</td><td>음운 변동의 <b>종류 명칭</b>과 <b>적용 순서</b>, 문장 성분, 사동·피동, 높임 표현</td><td>교체(비음화·구개음화)·탈락·첨가·축약 / 겹받침 발음 / 이중 피동 오류</td></tr>
+</tbody>
+</table>
+
+<h4 class="sub">■ 수학 7문항</h4>
+<table>
+<thead><tr><th style="width:10%">문항</th><th style="width:20%">단원</th><th style="width:34%">출제 형태</th><th>고빈도 예상 지점</th></tr></thead>
+<tbody>
+<tr><td class="c">1~2</td><td class="c">수학Ⅰ<br>지수·로그</td><td>지수법칙 계산, 로그 방정식·부등식의 <b>해 구하기</b></td><td>진수·밑 조건 처리, log의 덧셈 → 곱으로 묶기, 치환</td></tr>
+<tr><td class="c">3</td><td class="c">수학Ⅰ<br>삼각함수</td><td>주기·최대·최소, 삼각방정식의 <b>모든 해 또는 해의 합</b></td><td>sin²+cos²=1 치환, 2차식 꼴로 변형, 사인·코사인법칙</td></tr>
+<tr><td class="c">4</td><td class="c">수학Ⅰ<br>수열</td><td>등차·등비 일반항, Σ 계산, <b>귀납적 정의</b>에서 일반항 유도</td><td>Σk, Σk², 부분분수, a<sub>n+1</sub>=pa<sub>n</sub>+q 꼴</td></tr>
+<tr><td class="c">5</td><td class="c">수학Ⅱ<br>극한·연속</td><td>미정계수 결정(<b>연속 조건</b>), 0/0 꼴 극한</td><td>분모의 인수를 분자가 가져야 함 → 대입 후 연립</td></tr>
+<tr><td class="c">6</td><td class="c">수학Ⅱ<br>미분</td><td><b>접선의 방정식</b>, 극댓값·극솟값, 닫힌구간 최대·최소</td><td>삼차함수 그래프 개형, f′(x)=0의 부호 변화</td></tr>
+<tr><td class="c">7</td><td class="c">수학Ⅱ<br>적분</td><td>정적분 계산, <b>곡선과 x축 사이 넓이</b>, 두 곡선 사이 넓이</td><td>부호 바뀌는 구간 분할, 교점 먼저 구하기</td></tr>
+</tbody>
+</table>
+
+<h3 class="sec">1-4. 답안 작성 규칙 — 감점을 만드는 것들</h3>
+<div class="tip">
+<b>① 형식 조건 우선.</b> "한 문장으로", "○○자 이내", "~때문이다로 끝맺을 것" 같은 조건은 내용보다 먼저 채점된다. 조건 위반은 내용이 맞아도 감점.<br>
+<b>② 국어는 지문의 말을 그대로.</b> 핵심어 문항은 <u>지문에 있는 단어를 원형 그대로</u> 옮겨 적는다. 동의어로 바꾸면 불일치 처리될 수 있다.<br>
+<b>③ 수학은 답만 쓰지 않는다.</b> 약술형이라도 <u>식 변형 2~3줄</u>은 남긴다. 최종 답이 틀려도 과정에서 부분점수가 나온다.<br>
+<b>④ 조건 처리 누락 금지.</b> 로그의 진수·밑 조건, 삼각방정식의 정의역, 근의 범위 제한을 명시하지 않으면 답이 맞아도 깎인다.<br>
+<b>⑤ 빈칸은 비우지 않는다.</b> 오답 감점이 없는 구조이므로 <u>모든 칸을 채운다</u>.
+</div>
+
+<h3 class="sec">1-5. 70분 운영 시뮬레이션</h3>
+<table>
+<thead><tr><th style="width:14%">구간</th><th style="width:16%">누적 시간</th><th>할 일</th></tr></thead>
+<tbody>
+<tr><td class="c">0~2분</td><td class="c">2분</td><td>전체 훑기. 수학 중 <b>즉시 풀리는 문항 3개</b>를 표시해 둔다.</td></tr>
+<tr><td class="c">2~14분</td><td class="c">14분</td><td>국어 독서 3문항. 지문은 <b>1회독 + 문단별 핵심어 표시</b>로 끝낸다.</td></tr>
+<tr><td class="c">14~28분</td><td class="c">28분</td><td>국어 문학 3문항 + 문법 1문항. 문법은 <b>2분 내</b> 처리.</td></tr>
+<tr><td class="c">28~50분</td><td class="c">50분</td><td>수학 수학Ⅰ 4문항. 한 문항 <b>5분 초과 시 즉시 보류</b>하고 넘어간다.</td></tr>
+<tr><td class="c">50~65분</td><td class="c">65분</td><td>수학 수학Ⅱ 3문항.</td></tr>
+<tr><td class="c">65~70분</td><td class="c">70분</td><td>보류 문항 복귀 + <b>빈칸 전수 점검</b>. 무응답 0개로 끝낸다.</td></tr>
+</tbody>
+</table>
+
+
+<!-- ============ PART 2 ============ -->
+<div class="page-break"></div>
+<div class="part"><div class="n">PART 2</div><h2>예상문제 제1회</h2></div>
+
+<div class="examhead">
+  <div class="t">을지대학교 약술형 논술 예상문제 &nbsp;제1회</div>
+  <div class="s">국어 7문항 · 수학 7문항 (총 14문항)</div>
+  <div class="bar"><span><b>시간</b> 70분</span><span><b>배점</b> 문항당 10점 / 140점</span><span><b>범위</b> 국어: 독서·문학·언어와 매체 / 수학: 수학Ⅰ·수학Ⅱ</span></div>
+</div>
+
+<h3 class="sec">국어 영역</h3>
+
+<div class="passage">
+<span class="lbl">[1~3] 다음 글을 읽고 물음에 답하시오.</span>
+<div class="serif">
+사람의 몸은 외부 환경이 크게 달라져도 체온, 혈당, 삼투압과 같은 내부 상태를 일정한 범위 안에서 유지한다. 이렇게 내부 환경을 안정적으로 유지하려는 성질을 <b>항상성</b>이라 한다. 항상성은 조절 중추가 설정값과 현재 값의 차이를 감지하고, 그 차이를 줄이는 방향으로 반응을 일으킴으로써 유지된다. 이때 반응의 결과가 다시 조절 중추로 되돌아가 처음의 자극을 약화시키는 방식을 되먹임이라 한다.<br><br>
+체온 조절이 대표적이다. 기온이 내려가 피부의 감각 수용기가 이를 감지하면 그 신호는 뇌의 <b>시상 하부</b>로 전달된다. 시상 하부는 피부 근처의 혈관을 수축시켜 밖으로 빠져나가는 열의 양을 줄이고, 동시에 골격근을 빠르게 떨게 하여 열 생산을 늘린다. 그 결과 체온이 올라가면 처음의 자극이었던 저온 상태가 해소되므로 반응도 멈춘다. 즉 ( &nbsp;ⓐ&nbsp; ) 되먹임은 변화를 되돌려 설정값 부근으로 복귀시킨다.<br><br>
+반대로 반응의 결과가 처음의 자극을 오히려 강화하는 방식도 있다. 출산이 시작되면 자궁의 수축이 옥시토신의 분비를 늘리고, 늘어난 옥시토신은 자궁을 더 강하게 수축시킨다. 이처럼 변화를 증폭시키는 방식을 <b>양성 되먹임</b>이라 한다. 양성 되먹임은 짧은 시간 안에 하나의 사건을 확실하게 완결시켜야 할 때에만 제한적으로 쓰인다. ㉠<u>체온 조절에 양성 되먹임이 사용되지 않는 까닭</u>도 여기에 있다.
+</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>빈칸 ⓐ에 들어갈 말을 지문에서 찾아 <b>두 글자</b>로 쓰시오.<span class="pt">10점</span></div>
+<div class="ans short"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>기온이 내려갔을 때 시상 하부가 일으키는 반응 두 가지를, 각각 그 결과와 함께 쓰시오.<span class="pt">10점</span></div>
+<div class="box"><span class="lbl">조건</span>① 지문에 제시된 표현을 활용할 것. ② '~하여 ~한다'의 형식으로 각각 한 문장씩 쓸 것.</div>
+<div class="ans tall"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>㉠의 이유를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="box"><span class="lbl">조건</span>① '양성 되먹임'과 '항상성'이라는 말을 모두 사용할 것. ② '~때문이다.'로 끝맺을 것.</div>
+<div class="ans"></div></div>
+
+<div class="passage">
+<span class="lbl">[4] 다음 시를 읽고 물음에 답하시오.</span>
+<div class="poem">매운 계절의 채찍에 갈겨
+마침내 북방으로 휩쓸려 오다
+
+하늘도 그만 지쳐 끝난 고원
+서릿발 칼날진 그 위에 서다
+
+어데다 무릎을 꿇어야 하나
+한 발 재겨 디딜 곳조차 없다
+
+㉡<u>이러매 눈 감아 생각해 볼밖에
+겨울은 강철로 된 무지갠가 보다</u>
+
+— 이육사, 「절정」</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">4</span>㉡의 마지막 행에 사용된 표현법의 명칭을 쓰고, 그 표현이 드러내는 화자의 태도를 서술하시오.<span class="pt">10점</span></div>
+<div class="box"><span class="lbl">조건</span>표현법 명칭은 <b>세 글자</b>로 쓰고, 화자의 태도는 <b>한 문장</b>으로 쓸 것.</div>
+<div class="ans"></div></div>
+
+<div class="passage">
+<span class="lbl">[5] 다음 시를 읽고 물음에 답하시오.</span>
+<div class="poem">산에는 꽃 피네
+꽃이 피네
+갈 봄 여름 없이
+꽃이 피네
+
+산에
+산에
+피는 꽃은
+㉢저만치 혼자서 피어 있네
+
+산에서 우는 작은 새여
+꽃이 좋아
+산에서
+사노라네
+
+산에는 꽃 지네
+꽃이 지네
+갈 봄 여름 없이
+꽃이 지네
+
+— 김소월, 「산유화」</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">5</span>이 시의 1연과 4연이 이루는 구성 방식의 명칭을 쓰고, ㉢ '저만치'가 환기하는 정서를 <b>두 글자</b>의 한자어로 쓰시오.<span class="pt">10점</span></div>
+<div class="ans"></div></div>
+
+<div class="passage">
+<span class="lbl">[6] 다음 글을 읽고 물음에 답하시오.</span>
+<div class="serif">
+그날은 아침부터 이상하게 운수가 좋았다. 첫 번째 손님이 앞집 마나님을 전차 정류장까지 모셔다 준 것을 비롯하여, 인력거는 하루 종일 끊이지 않았다. 김 첨지는 오랜만에 손에 쥔 돈을 세어 보며, 앓아누운 아내가 그렇게도 먹고 싶어 하던 설렁탕을 사 들고 집으로 향했다. 그러나 문을 열고 들어선 방 안은 죽은 듯이 고요했다.<br><br>
+"설렁탕을 사 왔는데 왜 먹지를 못하니, 왜 먹지를 못하니…… 괴상하게도 오늘은! 운수가 좋더니만……"<br><br>
+<span style="font-size:8.8pt;color:#6b7684">— 현진건, 「운수 좋은 날」 중에서(줄거리 요약과 인용)</span>
+</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">6</span>이 작품의 제목 '운수 좋은 날'이 만들어 내는 표현 효과의 명칭을 쓰고, 그렇게 판단한 근거를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>다음 ㉮~㉰에서 일어나는 음운 변동의 종류를 각각 쓰시오. (㉮는 일어나는 순서대로 두 가지를 모두 쓸 것)<span class="pt">10점</span></div>
+<div class="box"><span class="lbl">보기</span>㉮ 밟는[밤ː는] &nbsp;&nbsp; ㉯ 굳이[구지] &nbsp;&nbsp; ㉰ 놓고[노코]</div>
+<div class="ans tall"></div></div>
+
+<div class="page-break"></div>
+<h3 class="sec">수학 영역</h3>
+<div class="tip" style="margin-top:0">각 문항은 <b>풀이 과정</b>과 <b>답</b>을 함께 쓰시오. 답만 쓴 경우 부분점수를 받을 수 없습니다.</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>방정식 log<sub>2</sub>(<i>x</i>−1) + log<sub>2</sub>(<i>x</i>+3) = 5 를 만족시키는 실수 <i>x</i>의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>0 ≤ <i>x</i> &lt; 2π 에서 방정식 2sin<sup>2</sup><i>x</i> − 3cos <i>x</i> = 0 의 <b>모든 해의 합</b>을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>등차수열 {<i>a<sub>n</sub></i>} 에서 <i>a</i><sub>3</sub> = 7, <i>a</i><sub>7</sub> = 19 일 때, <span class="math">Σ<sub>k=1</sub><sup>10</sup> <i>a<sub>k</sub></i></span> 의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">4</span>수열 {<i>a<sub>n</sub></i>} 이 <i>a</i><sub>1</sub> = 2, <i>a</i><sub><i>n</i>+1</sub> = 2<i>a<sub>n</sub></i> + 1 (<i>n</i> ≥ 1) 로 정의될 때, 일반항 <i>a<sub>n</sub></i> 을 구하고 <i>a</i><sub>5</sub> 의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">5</span>함수 <i>f</i>(<i>x</i>) 가 아래와 같이 정의되고 <i>x</i> = 2 에서 연속일 때, 상수 <i>a</i>, <i>b</i> 의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="box"><span class="math"><i>f</i>(<i>x</i>) = (<i>x</i><sup>2</sup> + <i>ax</i> + <i>b</i>) / (<i>x</i> − 2) &nbsp;(<i>x</i> ≠ 2), &nbsp;&nbsp; <i>f</i>(2) = 5</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">6</span>함수 <i>f</i>(<i>x</i>) = <i>x</i><sup>3</sup> − 3<i>x</i><sup>2</sup> − 9<i>x</i> + 5 의 극댓값과 극솟값을 각각 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>곡선 <i>y</i> = <i>x</i><sup>2</sup> − 2<i>x</i> 와 <i>x</i>축으로 둘러싸인 부분의 넓이를 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+<!-- ============ PART 3 ============ -->
+<div class="page-break"></div>
+<div class="part"><div class="n">PART 3</div><h2>예상문제 제2회</h2></div>
+
+<div class="examhead">
+  <div class="t">을지대학교 약술형 논술 예상문제 &nbsp;제2회</div>
+  <div class="s">국어 7문항 · 수학 7문항 (총 14문항)</div>
+  <div class="bar"><span><b>시간</b> 70분</span><span><b>배점</b> 문항당 10점 / 140점</span><span><b>범위</b> 국어: 독서·문학·언어와 매체 / 수학: 수학Ⅰ·수학Ⅱ</span></div>
+</div>
+
+<h3 class="sec">국어 영역</h3>
+
+<div class="passage">
+<span class="lbl">[1~3] 다음 글을 읽고 물음에 답하시오.</span>
+<div class="serif">
+시장에서 이루어진 거래가 거래 당사자가 아닌 제삼자에게 이익이나 손해를 주면서도 그에 대한 대가가 오가지 않는 현상을 <b>외부효과</b>라 한다. 제삼자에게 손해를 주면 부정적 외부효과, 이익을 주면 긍정적 외부효과이다.<br><br>
+오염 물질을 배출하는 공장의 경우를 보자. 공장은 원료비와 인건비처럼 자신이 직접 지출하는 <b>사적 비용</b>만을 고려하여 생산량을 정한다. 그러나 사회 전체가 실제로 치르는 <b>사회적 비용</b>에는 인근 주민이 감수하는 건강 피해와 환경 정화 비용까지 포함된다. 사적 비용이 사회적 비용보다 작으므로, 공장은 사회적으로 바람직한 수준보다 ( &nbsp;ⓐ&nbsp; ) 생산하게 된다. 이처럼 시장에 맡겨 두었을 때 자원이 효율적으로 배분되지 못하는 상태를 <b>시장 실패</b>라 한다.<br><br>
+경제학자 피구는 이 격차를 세금으로 메우자고 제안했다. 사적 비용과 사회적 비용의 차이만큼 생산자에게 세금을 물리면, 생산자가 인식하는 비용이 사회적 비용과 같아지므로 생산량이 사회적 최적 수준까지 줄어든다. 이 세금을 <b>피구세</b>라 한다. 한편 코즈는 ㉠<u>오염을 배출할 권리를 누구에게 줄 것인지만 분명하게 정해 두면, 정부가 개입하지 않더라도 당사자들 사이의 협상을 통해 효율적인 결과에 이를 수 있다</u>고 보았다. 다만 이 주장은 협상 과정에서 드는 비용이 충분히 작을 때에만 성립한다.
+</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>빈칸 ⓐ에 들어갈 말로 가장 적절한 것을 <b>두 글자 이내</b>로 쓰고, 그렇게 판단한 근거를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>피구세가 생산량을 줄이는 원리를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="box"><span class="lbl">조건</span>'사적 비용'과 '사회적 비용'을 모두 사용할 것.</div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>㉠의 주장이 성립하기 위해 필요한 조건 두 가지를 지문에서 찾아 각각 쓰시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="passage">
+<span class="lbl">[4] 다음 시조를 읽고 물음에 답하시오.</span>
+<div class="poem">&lt;제1수&gt;
+내 벗이 몇이나 하니 수석(水石)과 송죽(松竹)이라
+동산(東山)에 달 오르니 긔 더욱 반갑고야
+두어라 이 다섯밧긔 또 더하야 머엇하리
+
+&lt;제2수&gt;
+㉡구룸 빗치 조타 하나 검기를 자로 한다
+㉢바람 소리 맑다 하나 그칠 적이 하노매라
+조코도 그츨 뉘 업기는 믈뿐인가 하노라
+
+— 윤선도, 「오우가(五友歌)」</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">4</span>&lt;제1수&gt;에 제시된 다섯 벗을 모두 쓰고, &lt;제2수&gt;에서 ㉡과 ㉢을 제시한 의도를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="passage">
+<span class="lbl">[5] 다음 글을 읽고 물음에 답하시오.</span>
+<div class="serif">
+"장인님! 인젠 저……"<br><br>
+내가 이렇게 뒤통수를 긁고, 나이가 찼으니 성례를 시켜 달라고 하면 장인님은 늘 같은 소리다. 점순이의 키가 작아서 아직 안 된다는 것이다. 하지만 밭을 갈고 논을 매는 것은 죄다 내 차지다. 점순이는 나를 보고 "밤낮 일만 하다 말 텐가!" 하고 쫑알거리는데, 나는 그 말이 무슨 뜻인지 한참 뒤에야 겨우 알아차렸다.<br><br>
+<span style="font-size:8.8pt;color:#6b7684">— 김유정, 「봄·봄」 중에서(줄거리 요약과 인용)</span>
+</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">5</span>이 작품의 서술 시점을 쓰고, 그 시점이 작품의 분위기 형성에 기여하는 바를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="passage">
+<span class="lbl">[6] 다음 시를 읽고 물음에 답하시오.</span>
+<div class="poem">창밖에 밤비가 속살거려
+육첩방(六疊房)은 남의 나라,
+
+시인이란 슬픈 천명인 줄 알면서도
+한 줄 시를 적어 볼까,
+
+(중략)
+
+㉣등불을 밝혀 ㉤어둠을 조금 내몰고,
+시대처럼 올 아침을 기다리는 최후의 나,
+
+나는 나에게 작은 손을 내밀어
+눈물과 위안으로 잡는 최초의 악수.
+
+— 윤동주, 「쉽게 씌어진 시」</div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">6</span>㉣과 ㉤의 상징적 의미를 각각 쓰고, 마지막 연에 드러난 화자의 태도를 <b>한 문장</b>으로 서술하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>다음 ㉮~㉰에 대하여 물음에 답하시오.<span class="pt">10점</span></div>
+<div class="box"><span class="lbl">보기</span>㉮ 할머니께서 진지를 잡수신다.<br>㉯ 나는 할머니께 선물을 드렸다.<br>㉰ 그 책은 나에게 <u>읽혀졌다</u>.</div>
+<div style="font-size:9.6pt;margin-top:6px">(1) ㉮와 ㉯에 실현된 높임 표현의 종류를 각각 쓰시오.<br>(2) ㉰의 밑줄 친 부분이 문법적으로 잘못된 이유를 밝히고, 바르게 고쳐 쓰시오.</div>
+<div class="ans work"></div></div>
+
+<div class="page-break"></div>
+<h3 class="sec">수학 영역</h3>
+<div class="tip" style="margin-top:0">각 문항은 <b>풀이 과정</b>과 <b>답</b>을 함께 쓰시오. 답만 쓴 경우 부분점수를 받을 수 없습니다.</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>2<sup><i>x</i></sup> = 5 일 때, <span class="math">(4<sup><i>x</i></sup> + 2<sup><i>x</i>+1</sup>) / (2<sup><i>x</i></sup> + 2)</span> 의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>부등식 log<sub>3</sub>(<i>x</i> − 2) ≤ 2 를 만족시키는 <b>정수 <i>x</i>의 개수</b>를 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>함수 <i>y</i> = 3 sin(2<i>x</i> − π/3) + 1 의 주기, 최댓값, 최솟값을 각각 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">4</span><span class="math">Σ<sub>k=1</sub><sup>8</sup> <i>k</i>(<i>k</i> + 1)</span> 의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">5</span>곡선 <i>y</i> = <i>x</i><sup>3</sup> − 2<i>x</i> + 1 위의 점 (1, 0) 에서의 접선의 방정식을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">6</span>닫힌구간 [0, 4] 에서 함수 <i>f</i>(<i>x</i>) = <i>x</i><sup>3</sup> − 6<i>x</i><sup>2</sup> + 9<i>x</i> 의 최댓값과 최솟값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>정적분 <span class="math">∫<sub>1</sub><sup>3</sup> (3<i>x</i><sup>2</sup> − 4<i>x</i> + 1) <i>dx</i></span> 의 값을 구하시오.<span class="pt">10점</span></div>
+<div class="ans work"></div></div>
+<!-- ============ PART 4 ============ -->
+<div class="page-break"></div>
+<div class="part"><div class="n">PART 4</div><h2>정답 및 해설</h2></div>
+
+<h3 class="sec">제1회 · 국어 영역</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>빈칸 ⓐ</div>
+<div class="a"><b>답</b> 음성</div>
+<div class="e">3문단에서 자극을 강화하는 방식을 '양성 되먹임'이라 명명했으므로, 2문단의 ⓐ는 그와 대립하는 '음성'이다. 1문단의 "처음의 자극을 약화시키는 방식"이라는 정의가 결정적 근거.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>시상 하부의 두 반응</div>
+<div class="a"><b>답</b> ① 피부 근처의 혈관을 수축시켜 밖으로 빠져나가는 열의 양을 줄인다. ② 골격근을 빠르게 떨게 하여 열 생산을 늘린다.</div>
+<div class="e">'반응'과 '결과'를 짝으로 요구했으므로 <b>혈관 수축 → 열 손실 감소</b>, <b>골격근 떨림 → 열 생산 증가</b>의 두 쌍을 모두 써야 만점. 한 쌍만 쓰면 5점.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>㉠의 이유</div>
+<div class="a"><b>답</b> 양성 되먹임은 처음의 자극을 강화하여 변화를 증폭시키므로, 체온에 적용하면 설정값에서 계속 멀어져 항상성이 무너지기 때문이다.</div>
+<div class="e">조건 두 개('양성 되먹임'·'항상성' 사용, '~때문이다'로 종결)를 모두 충족해야 한다. 내용이 맞아도 종결 형식을 어기면 감점.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>이육사 「절정」</div>
+<div class="a"><b>답</b> 역설법 / 극한의 절망적 현실을 오히려 황홀한 아름다움으로 받아들이며 초극하려는 의지적 태도</div>
+<div class="e">'겨울'(가혹한 현실)과 '무지개'(황홀·희망)는 양립할 수 없는 이미지다. 여기에 '강철'이라는 견고함이 겹쳐 모순 속에서 의지를 드러내는 <b>역설</b>이 성립한다. '반어'로 쓰면 오답.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>김소월 「산유화」</div>
+<div class="a"><b>답</b> 수미상관 / 고독(孤獨)</div>
+<div class="e">1연 '꽃 피네'와 4연 '꽃 지네'가 동일한 통사 구조로 호응하여 형태적 안정감과 여운을 만든다. '저만치'는 화자와 대상 사이의 좁혀지지 않는 거리를 드러내는 시어로, 존재의 근원적 고독을 환기한다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span>현진건 「운수 좋은 날」</div>
+<div class="a"><b>답</b> 반어(상황적 아이러니) / 돈벌이가 유난히 잘된 '운수 좋은 날'이 실은 아내가 죽은 가장 불행한 날이어서, 제목이 실제 결말과 정반대이기 때문이다.</div>
+<div class="e">표현법 명칭과 근거를 모두 요구했으므로 명칭만 쓰면 5점. 인물의 행운과 결말의 비극이 정면으로 충돌한다는 점을 명시해야 한다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>음운 변동</div>
+<div class="a"><b>답</b> ㉮ 자음군 단순화(탈락) → 비음화(교체) &nbsp;/&nbsp; ㉯ 구개음화(교체) &nbsp;/&nbsp; ㉰ 거센소리되기(자음 축약)</div>
+<div class="e">㉮ 밟는 → [밥ː는](겹받침 ㄼ에서 ㄹ 탈락) → [밤ː는](ㅂ이 뒤의 ㄴ에 동화되어 ㅁ으로 교체). <b>순서를 뒤집으면 감점</b>이다.<br>
+㉯ 'ㄷ'이 형식 형태소 '-이'와 만나 [ㅈ]으로 바뀌는 구개음화.<br>㉰ 'ㅎ'과 'ㄱ'이 합쳐져 [ㅋ]이 되는 축약.</div></div>
+
+<h3 class="sec">제1회 · 수학 영역</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>로그 방정식</div>
+<div class="a"><b>답</b> <i>x</i> = 5</div>
+<div class="e">진수 조건: <i>x</i> − 1 &gt; 0 이고 <i>x</i> + 3 &gt; 0 이므로 <b><i>x</i> &gt; 1</b>.<br>
+log<sub>2</sub>{(<i>x</i>−1)(<i>x</i>+3)} = 5 → (<i>x</i>−1)(<i>x</i>+3) = 2<sup>5</sup> = 32<br>
+<i>x</i><sup>2</sup> + 2<i>x</i> − 35 = 0 → (<i>x</i> + 7)(<i>x</i> − 5) = 0 → <i>x</i> = −7 또는 <i>x</i> = 5.<br>
+진수 조건에 의해 <i>x</i> = −7 은 <b>제외</b>. ∴ <i>x</i> = 5<br>
+<span style="color:#b03a2e">▶ 진수 조건을 쓰지 않고 답만 맞히면 감점 대상이다.</span></div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>삼각방정식</div>
+<div class="a"><b>답</b> 2π</div>
+<div class="e">sin<sup>2</sup><i>x</i> = 1 − cos<sup>2</sup><i>x</i> 를 대입하면<br>
+2(1 − cos<sup>2</sup><i>x</i>) − 3cos <i>x</i> = 0 → 2cos<sup>2</sup><i>x</i> + 3cos <i>x</i> − 2 = 0<br>
+(2cos <i>x</i> − 1)(cos <i>x</i> + 2) = 0. 그런데 −1 ≤ cos <i>x</i> ≤ 1 이므로 cos <i>x</i> = −2 는 불가능.<br>
+cos <i>x</i> = 1/2 → 0 ≤ <i>x</i> &lt; 2π 에서 <i>x</i> = π/3, 5π/3.<br>
+∴ 해의 합 = π/3 + 5π/3 = 6π/3 = <b>2π</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>등차수열의 합</div>
+<div class="a"><b>답</b> 145</div>
+<div class="e"><i>a</i><sub>7</sub> − <i>a</i><sub>3</sub> = 4<i>d</i> = 19 − 7 = 12 → <i>d</i> = 3.<br>
+<i>a</i><sub>1</sub> = <i>a</i><sub>3</sub> − 2<i>d</i> = 7 − 6 = 1.<br>
+<i>S</i><sub>10</sub> = (10/2){2·1 + (10−1)·3} = 5 × 29 = <b>145</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>귀납적 정의</div>
+<div class="a"><b>답</b> <i>a<sub>n</sub></i> = 3 · 2<sup><i>n</i>−1</sup> − 1, &nbsp; <i>a</i><sub>5</sub> = 47</div>
+<div class="e">양변에 1을 더하면 <i>a</i><sub><i>n</i>+1</sub> + 1 = 2(<i>a<sub>n</sub></i> + 1).<br>
+즉 수열 {<i>a<sub>n</sub></i> + 1} 은 첫째항 <i>a</i><sub>1</sub> + 1 = 3, 공비 2 인 등비수열.<br>
+<i>a<sub>n</sub></i> + 1 = 3 · 2<sup><i>n</i>−1</sup> → <i>a<sub>n</sub></i> = 3 · 2<sup><i>n</i>−1</sup> − 1.<br>
+<i>a</i><sub>5</sub> = 3 · 2<sup>4</sup> − 1 = 48 − 1 = <b>47</b><br>
+<span style="color:#1d3f6e">▶ <i>a</i><sub><i>n</i>+1</sub> = <i>pa<sub>n</sub></i> + <i>q</i> 꼴은 '양변에 <i>q</i>/(<i>p</i>−1) 을 더해 등비수열로 만든다'가 정석.</span></div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>연속과 미정계수</div>
+<div class="a"><b>답</b> <i>a</i> = 1, <i>b</i> = −6</div>
+<div class="e"><i>x</i> = 2 에서 연속이려면 극한값이 존재해야 하고, 분모 → 0 이므로 분자도 → 0 이어야 한다.<br>
+2<sup>2</sup> + 2<i>a</i> + <i>b</i> = 0 → 2<i>a</i> + <i>b</i> = −4 &nbsp;···①<br>
+분자를 인수분해하여 <i>x</i><sup>2</sup> + <i>ax</i> + <i>b</i> = (<i>x</i> − 2)(<i>x</i> − <i>c</i>) 로 두면<br>
+lim<sub><i>x</i>→2</sub> <i>f</i>(<i>x</i>) = lim<sub><i>x</i>→2</sub> (<i>x</i> − <i>c</i>) = 2 − <i>c</i> = <i>f</i>(2) = 5 → <i>c</i> = −3.<br>
+따라서 (<i>x</i> − 2)(<i>x</i> + 3) = <i>x</i><sup>2</sup> + <i>x</i> − 6 이므로 <b><i>a</i> = 1, <i>b</i> = −6</b>. ①에 대입하면 2 + (−6) = −4 로 일치.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span>삼차함수의 극값</div>
+<div class="a"><b>답</b> 극댓값 10 (<i>x</i> = −1), 극솟값 −22 (<i>x</i> = 3)</div>
+<div class="e"><i>f</i>′(<i>x</i>) = 3<i>x</i><sup>2</sup> − 6<i>x</i> − 9 = 3(<i>x</i> − 3)(<i>x</i> + 1).<br>
+<i>f</i>′(<i>x</i>) 의 부호는 <i>x</i> &lt; −1 에서 +, −1 &lt; <i>x</i> &lt; 3 에서 −, <i>x</i> &gt; 3 에서 +.<br>
+<i>f</i>(−1) = −1 − 3 + 9 + 5 = <b>10</b> (극대), &nbsp; <i>f</i>(3) = 27 − 27 − 27 + 5 = <b>−22</b> (극소)</div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>곡선과 <i>x</i>축 사이의 넓이</div>
+<div class="a"><b>답</b> 4/3</div>
+<div class="e"><i>x</i><sup>2</sup> − 2<i>x</i> = 0 → <i>x</i> = 0, 2 가 교점. 0 &lt; <i>x</i> &lt; 2 에서 <i>y</i> &lt; 0 이므로 피적분함수의 부호를 뒤집는다.<br>
+<i>S</i> = ∫<sub>0</sub><sup>2</sup> (2<i>x</i> − <i>x</i><sup>2</sup>) <i>dx</i> = [<i>x</i><sup>2</sup> − <i>x</i><sup>3</sup>/3]<sub>0</sub><sup>2</sup> = 4 − 8/3 = <b>4/3</b><br>
+<span style="color:#b03a2e">▶ 부호를 뒤집지 않고 −4/3 으로 답하면 감점.</span></div></div>
+
+<div class="page-break"></div>
+<h3 class="sec">제2회 · 국어 영역</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>빈칸 ⓐ</div>
+<div class="a"><b>답</b> 많이(또는 과다·과잉) / 공장은 사회적 비용보다 작은 사적 비용만 고려하므로 실제보다 비용을 적게 인식하여 생산량을 늘리기 때문이다.</div>
+<div class="e">부정적 외부효과가 있으면 시장 생산량이 사회적 최적 수준을 <b>초과</b>한다. 비용을 과소 인식한다는 점이 근거의 핵심어.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>피구세의 원리</div>
+<div class="a"><b>답</b> 사적 비용과 사회적 비용의 차이만큼 세금을 물려 생산자가 인식하는 비용을 사회적 비용과 같아지게 함으로써, 생산량이 사회적 최적 수준까지 줄어들게 한다.</div>
+<div class="e">'세금을 매긴다'만 쓰면 원리 설명이 아니다. <b>격차를 메워 비용 인식을 일치시킨다</b>는 인과가 들어가야 만점.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>코즈 주장의 성립 조건</div>
+<div class="a"><b>답</b> ① 오염을 배출할 권리를 누구에게 줄 것인지가 분명하게 정해져 있을 것 ② 협상 과정에서 드는 비용이 충분히 작을 것</div>
+<div class="e">②는 마지막 문장의 단서이다. 지문에 명시된 단서를 놓치는 것이 가장 흔한 실점 유형.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>윤선도 「오우가」</div>
+<div class="a"><b>답</b> 물(水)·돌(石)·소나무(松)·대나무(竹)·달(月) / 쉽게 흐려지는 구름과 곧 그치는 바람을 먼저 제시하여, 맑으면서도 그치지 않는 물의 변함없음을 대조적으로 부각하기 위해서이다.</div>
+<div class="e">제2수는 <b>대조</b>를 통한 예찬이 구조의 핵심이다. 다섯 벗 중 하나라도 빠지면 감점.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>김유정 「봄·봄」</div>
+<div class="a"><b>답</b> 1인칭 주인공 시점 / 어리숙하고 순박한 '나'가 자신의 처지를 직접 서술하여, 독자가 '나'보다 상황을 먼저 알아차리게 되므로 해학적 분위기가 형성된다.</div>
+<div class="e">'1인칭 관찰자 시점'은 오답. 서술자 '나'가 사건의 <b>주인공</b>이다. 서술자의 인식과 독자의 인식 사이의 간극이 웃음을 만든다는 점을 써야 한다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span>윤동주 「쉽게 씌어진 시」</div>
+<div class="a"><b>답</b> ㉣ 등불: 어둠을 밝히는 희망, 자기 성찰과 저항의 의지 / ㉤ 어둠: 일제 강점기의 암담한 현실 / 분열되어 있던 현실적 자아와 내면적 자아가 화해하며, 부끄러움을 딛고 새 시대를 기다리는 성찰적 태도가 드러난다.</div>
+<div class="e">'최후의 나'와 '최초의 나'가 나누는 '악수'가 <b>자아의 화해</b>를 상징한다는 것이 마지막 연 해석의 핵심.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>높임 표현과 이중 피동</div>
+<div class="a"><b>답</b> (1) ㉮ 주체 높임, ㉯ 객체 높임 &nbsp;(2) 피동 접미사 '-히-'와 피동 표현 '-어지다'가 겹쳐 쓰인 <b>이중 피동</b>이므로 잘못이다. → <b>읽혔다</b></div>
+<div class="e">㉮ 조사 '께서', 선어말 어미 '-시-', 특수 어휘 '진지·잡수시다'가 모두 주체(할머니)를 높인다.<br>
+㉯ 조사 '께'와 특수 어휘 '드리다'가 목적어·부사어가 지시하는 대상(할머니)을 높인다.<br>
+㉰ '읽-' + '-히-' 로 이미 피동이 완성되었으므로 '-어지다'를 덧붙일 수 없다.</div></div>
+
+<h3 class="sec">제2회 · 수학 영역</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>지수법칙</div>
+<div class="a"><b>답</b> 5</div>
+<div class="e">4<sup><i>x</i></sup> = (2<sup><i>x</i></sup>)<sup>2</sup> = 5<sup>2</sup> = 25, &nbsp; 2<sup><i>x</i>+1</sup> = 2 · 2<sup><i>x</i></sup> = 10.<br>
+따라서 (25 + 10) / (5 + 2) = 35 / 7 = <b>5</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>로그 부등식</div>
+<div class="a"><b>답</b> 9개</div>
+<div class="e">진수 조건: <i>x</i> − 2 &gt; 0 → <i>x</i> &gt; 2.<br>
+밑 3 &gt; 1 이므로 부등호 방향이 유지된다: <i>x</i> − 2 ≤ 3<sup>2</sup> = 9 → <i>x</i> ≤ 11.<br>
+∴ 2 &lt; <i>x</i> ≤ 11 에서 정수 <i>x</i> = 3, 4, …, 11 → <b>9개</b><br>
+<span style="color:#b03a2e">▶ 진수 조건을 빠뜨리면 <i>x</i> ≤ 11 만 보고 개수를 무한히 세게 된다.</span></div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>삼각함수의 그래프</div>
+<div class="a"><b>답</b> 주기 π, 최댓값 4, 최솟값 −2</div>
+<div class="e"><i>y</i> = <i>a</i> sin(<i>bx</i> + <i>c</i>) + <i>d</i> 에서 주기 = 2π / |<i>b</i>| = 2π / 2 = <b>π</b>.<br>
+최댓값 = |<i>a</i>| + <i>d</i> = 3 + 1 = <b>4</b>, &nbsp; 최솟값 = −|<i>a</i>| + <i>d</i> = −3 + 1 = <b>−2</b>.<br>
+평행이동(−π/3)은 주기·최대·최소에 영향을 주지 않는다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>시그마 계산</div>
+<div class="a"><b>답</b> 240</div>
+<div class="e">Σ<sub>k=1</sub><sup>8</sup> <i>k</i>(<i>k</i>+1) = Σ<sub>k=1</sub><sup>8</sup> <i>k</i><sup>2</sup> + Σ<sub>k=1</sub><sup>8</sup> <i>k</i><br>
+= (8 · 9 · 17)/6 + (8 · 9)/2 = 204 + 36 = <b>240</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>접선의 방정식</div>
+<div class="a"><b>답</b> <i>y</i> = <i>x</i> − 1</div>
+<div class="e">먼저 점 (1, 0) 이 곡선 위에 있는지 확인: 1<sup>3</sup> − 2 · 1 + 1 = 0 ✓<br>
+<i>y</i>′ = 3<i>x</i><sup>2</sup> − 2 → <i>x</i> = 1 에서의 기울기 = 3 − 2 = 1.<br>
+<i>y</i> − 0 = 1 · (<i>x</i> − 1) → <b><i>y</i> = <i>x</i> − 1</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span>닫힌구간에서의 최대·최소</div>
+<div class="a"><b>답</b> 최댓값 4, 최솟값 0</div>
+<div class="e"><i>f</i>′(<i>x</i>) = 3<i>x</i><sup>2</sup> − 12<i>x</i> + 9 = 3(<i>x</i> − 1)(<i>x</i> − 3) → 임계점 <i>x</i> = 1, 3.<br>
+<i>f</i>(0) = 0, &nbsp; <i>f</i>(1) = 1 − 6 + 9 = 4, &nbsp; <i>f</i>(3) = 27 − 54 + 27 = 0, &nbsp; <i>f</i>(4) = 64 − 96 + 36 = 4.<br>
+∴ 최댓값 <b>4</b> (<i>x</i> = 1, 4), 최솟값 <b>0</b> (<i>x</i> = 0, 3)<br>
+<span style="color:#1d3f6e">▶ 닫힌구간 문제는 <b>극값 후보 + 양 끝점</b>을 모두 대입해야 한다. 끝점 <i>x</i> = 4 를 빠뜨리면 최댓값을 놓친다.</span></div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>정적분</div>
+<div class="a"><b>답</b> 12</div>
+<div class="e">∫ (3<i>x</i><sup>2</sup> − 4<i>x</i> + 1) <i>dx</i> = <i>x</i><sup>3</sup> − 2<i>x</i><sup>2</sup> + <i>x</i> + C 이므로<br>
+[<i>x</i><sup>3</sup> − 2<i>x</i><sup>2</sup> + <i>x</i>]<sub>1</sub><sup>3</sup> = (27 − 18 + 3) − (1 − 2 + 1) = 12 − 0 = <b>12</b></div></div>
+
+<!-- ============ 부록 ============ -->
+<div class="page-break"></div>
+<div class="part"><div class="n">APPENDIX</div><h2>활용 안내 및 확인해야 할 사항</h2></div>
+
+<h3 class="sec">A. 이 자료의 사용법</h3>
+<table>
+<thead><tr><th style="width:18%">단계</th><th>방법</th></tr></thead>
+<tbody>
+<tr><td class="c"><b>1차 실전</b></td><td>타이머 <b>70분</b>을 맞추고 제1회를 통째로 응시한다. 해설을 먼저 보지 않는다. 풀지 못한 문항은 <b>비우지 말고</b> 아는 데까지 쓴다.</td></tr>
+<tr><td class="c"><b>채점</b></td><td>문항당 10점으로 채점하되, 수학은 <b>과정 5점 + 답 5점</b>으로 나누어 매긴다. 조건 위반(글자 수, 종결 어미)은 국어에서 −3점 처리.</td></tr>
+<tr><td class="c"><b>오답 정리</b></td><td>틀린 문항을 <b>①개념 부족 ②조건 누락 ③시간 부족</b> 세 가지로 분류한다. ②와 ③이 많다면 개념 공부가 아니라 <b>답안 작성 훈련</b>이 필요하다는 신호다.</td></tr>
+<tr><td class="c"><b>2차 실전</b></td><td>2~3일 뒤 제2회를 동일 조건으로 응시하여 <b>시간 배분이 개선되었는지</b>를 확인한다.</td></tr>
+<tr><td class="c"><b>연계 학습</b></td><td>EBS 연계율이 80% 이상이므로, 이후에는 <b>수능특강·수능완성</b> 지문과 문학 작품을 회독하며 같은 형식으로 자문자답 훈련을 한다.</td></tr>
+</tbody>
+</table>
+
+<h3 class="sec">B. 반드시 원문으로 확인해야 할 항목</h3>
+<div class="note">
+본 자료는 공개 입시 자료에서 교차 확인한 범위에서 제작되었습니다. 아래 항목은 <b>입학처 원문 대조가 필요</b>합니다.
+<ul class="tight">
+<li><b>정확한 출제범위</b> — 국어의 선택과목(화법과 작문 / 언어와 매체) 포함 여부, 수학의 미적분·확률과 통계·기하 포함 여부</li>
+<li><b>2025학년도 전형 반영 비율</b> — 2026·2027학년도의 논술 80 : 학생부 20 이 신설 첫해에도 동일했는지</li>
+<li><b>해당 학년도 모집단위 목록</b> 및 모집단위별 고사 시간대</li>
+<li><b>답안 작성 세부 지침</b> — 필기구 규정, 부분점수 부여 방식, 답란 형식</li>
+</ul>
+<b>확인 경로</b> &nbsp;① 을지대학교 입학처 <b>수시모집요강</b> PDF &nbsp;② 입학처 자료실의 <b>모의논술 문제지·해설지</b> &nbsp;③ 매년 3~4월 공개되는 <b>선행학습 영향평가 결과보고서</b>(전년도 기출·출제 의도·문항 분석 수록) &nbsp;④ 을지통합콜센터 1899-0001
+</div>
+
+<h3 class="sec">C. 수록 작품 출처</h3>
+<div class="footer-note">
+본 자료의 독서 지문(제1회 [1~3], 제2회 [1~3])과 수학 문항은 모두 <b>본 자료를 위해 새로 작성</b>한 것입니다.
+문학 제재는 저작권 보호 기간이 만료된 작품만을 사용했습니다 — 이육사 「절정」, 김소월 「산유화」, 현진건 「운수 좋은 날」, 윤선도 「오우가」, 김유정 「봄·봄」, 윤동주 「쉽게 씌어진 시」.
+고전 시조는 원문 표기를, 현대 작품은 현행 교과서의 표기 관행을 따랐습니다. 소설 제재는 문항 구성을 위해 줄거리를 요약하고 핵심 대목을 인용한 형태입니다.<br><br>
+<b>본 자료는 을지대학교가 제작하거나 공인한 자료가 아니며, 공개된 입시 정보를 바탕으로 한 비공식 예상문제입니다.</b>
+</div>
+
+</body></html>
