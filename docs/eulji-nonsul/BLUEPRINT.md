@@ -35,3 +35,16 @@
 `을지대_약술형논술_수학_예상문제_3회분.pdf` 및 통합판은 기출 없이 제작되어 다음이 실제와 달랐음:
 소문항 구조 부재, 배점 140점(실제 800점), 문항번호 1~7(실제 8~14), 수열 1문항(실제 2문항),
 난이도 수능 2.3점(실제 4점대).
+
+## 수식 조판
+
+수식은 KaTeX로 서버 사이드 렌더링합니다(`render.mjs`). 소스는 `$...$`(인라인),
+`$$...$$`(디스플레이) LaTeX이며, KaTeX CSS와 woff2 폰트는 base64로 인라인되어
+`eulji-math-blueprint.html` 한 파일만으로 렌더링됩니다.
+
+```bash
+npm i katex@0.16.11
+node render.mjs r1.html r2.html r3.html out.html
+chromium --headless --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf=out.pdf "file://$PWD/out.html"
+```
