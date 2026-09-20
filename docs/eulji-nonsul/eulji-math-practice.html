@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>을지대 약술형 논술 수학 예상문제</title>
+<style>
+@page { size: A4; margin: 17mm 16mm 16mm 16mm; }
+* { box-sizing: border-box; }
+body { font-family: "NanumBarunGothic","NanumGothic",sans-serif; font-size: 10.2pt; line-height: 1.62; color: #16181d; margin: 0; }
+h1,h2,h3,h4 { margin: 0; font-weight: 700; }
+.page-break { page-break-before: always; }
+i { font-family: "NanumMyeongjo", serif; font-style: italic; }
+.m { font-family: "NanumMyeongjo", serif; }
+
+.cover { height: 252mm; display: flex; flex-direction: column; justify-content: center; }
+.cover .rule { height: 5px; background: #7a1f2b; width: 72px; margin-bottom: 18px; }
+.cover .kicker { font-size: 11pt; letter-spacing: 3px; color: #7a1f2b; font-weight: 700; }
+.cover h1 { font-size: 29pt; line-height: 1.32; margin: 14px 0 6px; letter-spacing: -1px; }
+.cover h2 { font-size: 13.5pt; color: #4a5566; font-weight: 400; margin-bottom: 30px; }
+.cover .meta { border-top: 1px solid #cdd4de; padding-top: 14px; font-size: 9.6pt; color: #4a5566; }
+.cover .meta b { color: #16181d; }
+.cover .spec { margin: 24px 0 30px; border: 1px solid #7a1f2b; }
+.cover .spec div { display: flex; border-bottom: 1px solid #e6dcde; }
+.cover .spec div:last-child { border-bottom: 0; }
+.cover .spec span:first-child { width: 104px; background: #f7eef0; color: #7a1f2b; font-weight: 700; padding: 7px 10px; font-size: 9.4pt; }
+.cover .spec span:last-child { padding: 7px 12px; font-size: 9.8pt; }
+
+.part { border-left: 6px solid #7a1f2b; padding: 2px 0 2px 12px; margin: 0 0 16px; }
+.part .n { font-size: 8.8pt; letter-spacing: 2px; color: #7a1f2b; font-weight: 700; }
+.part h2 { font-size: 18pt; letter-spacing: -0.6px; }
+h3.sec { font-size: 12.4pt; margin: 22px 0 9px; padding-bottom: 5px; border-bottom: 2px solid #16181d; }
+
+table { width: 100%; border-collapse: collapse; font-size: 9.1pt; margin: 8px 0 12px; }
+th, td { border: 1px solid #c3cbd7; padding: 6px 7px; vertical-align: top; }
+th { background: #f7eef0; font-weight: 700; color: #7a1f2b; text-align: center; }
+td.c { text-align: center; }
+tbody tr:nth-child(even) td { background: #fafbfd; }
+
+.note { border: 1px solid #d8c48a; background: #fdf8ec; padding: 9px 12px; font-size: 9.2pt; margin: 10px 0; }
+.note b { color: #8a6d1d; }
+.tip { border-left: 3px solid #7a1f2b; background: #faf5f6; padding: 8px 12px; font-size: 9.4pt; margin: 9px 0; }
+
+.examhead { border: 2px solid #16181d; padding: 12px 14px; margin-bottom: 14px; }
+.examhead .t { font-size: 15pt; font-weight: 700; }
+.examhead .s { font-size: 9.4pt; color: #4a5566; margin-top: 4px; }
+.examhead .bar { display: flex; gap: 16px; margin-top: 9px; padding-top: 9px; border-top: 1px dashed #aab3c0; font-size: 9.2pt; }
+.examhead .bar b { color: #7a1f2b; }
+
+.q { margin: 14px 0 0; page-break-inside: avoid; }
+.q .qh { font-weight: 700; font-size: 10.4pt; margin-bottom: 5px; }
+.q .qh .no { display: inline-block; background: #7a1f2b; color: #fff; border-radius: 3px; padding: 1px 7px; margin-right: 7px; font-size: 9.4pt; }
+.q .qh .lv { float: right; font-weight: 700; font-size: 8.4pt; color: #fff; background: #98a1ae; border-radius: 9px; padding: 1px 8px; }
+.q .qh .lv.h { background: #7a1f2b; }
+.q .qh .lv.m { background: #b5843c; }
+.q .sub { font-size: 9.9pt; margin: 4px 0 0 6px; }
+.box { border: 1px solid #16181d; padding: 8px 11px; font-size: 9.6pt; margin: 7px 0; font-family: "NanumMyeongjo", serif; }
+.ans { border: 1px dashed #aab3c0; height: 185px; margin-top: 6px; position: relative; }
+.ans.big { height: 235px; }
+.ans::before { content: "풀이"; position: absolute; top: 3px; left: 6px; font-size: 8pt; color: #98a1ae; }
+
+.sol { border-top: 1px solid #dde2ea; padding: 9px 0 3px; page-break-inside: avoid; }
+.sol .sh { font-weight: 700; font-size: 10pt; margin-bottom: 3px; }
+.sol .sh .no { display: inline-block; background: #16181d; color: #fff; border-radius: 3px; padding: 1px 7px; margin-right: 7px; font-size: 9.2pt; }
+.sol .a { background: #f7eef0; padding: 5px 9px; font-size: 9.4pt; margin: 4px 0; }
+.sol .a b { color: #7a1f2b; }
+.sol .e { font-size: 9.2pt; color: #333a45; }
+.sol .rub { font-size: 8.6pt; color: #6b7684; border-left: 2px solid #cdd4de; padding-left: 8px; margin-top: 5px; }
+.warn { color: #b03a2e; }
+.key { color: #7a1f2b; font-weight: 700; }
+ul.tight { margin: 5px 0 5px 18px; padding: 0; }
+ul.tight li { margin-bottom: 3px; }
+.footer-note { font-size: 8.4pt; color: #6b7684; border-top: 1px solid #dde2ea; margin-top: 16px; padding-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="rule"></div>
+  <div class="kicker">EULJI UNIVERSITY · MATHEMATICS</div>
+  <h1>을지대 약술형 논술<br>수학 예상문제 3회분</h1>
+  <h2>실전 상단 재현 2회 + 안전마진 1회 · 21문항 · 정답 및 해설</h2>
+
+  <div class="spec">
+    <div><span>출제 범위</span><span>수학Ⅰ(지수·로그, 삼각함수, 수열) · 수학Ⅱ(극한·연속, 미분, 적분)</span></div>
+    <div><span>회차 구성</span><span>제1·2회 실전 상단 재현 / 제3회 안전마진(오버슈팅)</span></div>
+    <div><span>문항 수</span><span>회차당 7문항 (총 21문항)</span></div>
+    <div><span>배점</span><span>문항당 10점 / 회차당 70점</span></div>
+    <div><span>권장 시간</span><span>회차당 35분 (실전 70분 중 수학 배정분)</span></div>
+    <div><span>제외 범위</span><span>미적분 · 확률과 통계 · 기하 (약술형 출제범위 밖)</span></div>
+  </div>
+
+  <div class="meta">
+    <b>난이도 설계</b> &nbsp;| &nbsp;제1·2회 = 수능 2~3점 4문항 + 4점 초반 3문항 &nbsp;·&nbsp; 제3회 = 수능 4점 중반 7문항<br>
+    <b>작성일</b> &nbsp;| &nbsp;2026. 09. 20.
+  </div>
+</div>
+
+<div class="page-break"></div>
+<div class="part"><div class="n">난이도 설계</div><h2>이 문제집이 겨냥하는 지점</h2></div>
+
+<h3 class="sec">1. 기존 세트의 문제점과 보정 방향</h3>
+<table>
+<thead><tr><th style="width:22%">항목</th><th style="width:39%">보정 전</th><th style="width:39%">보정 후(본 자료)</th></tr></thead>
+<tbody>
+<tr><td class="c"><b>평균 배점 환산</b></td><td>수능 2.3점 수준</td><td>제1·2회 3.0점 / 제3회 4.4점</td></tr>
+<tr><td class="c"><b>개념 결합</b></td><td>전 문항 단일 개념 1스텝</td><td>각 회차 후반 3문항이 <b>2개 개념 결합</b>(예: 로그 + 근과 계수, 수열 + 부분분수)</td></tr>
+<tr><td class="c"><b>상단 변별</b></td><td>4점대 문항 없음</td><td>회차당 3문항 이상이 4점 밴드. 제3회는 전 문항 4점 중반</td></tr>
+<tr><td class="c"><b>실수 유발 장치</b></td><td>조건 처리 1개(진수 조건) 정도</td><td>부호 분할, 정의역 제한, 끝점 검사, 판별식 확인 등 <b>매 문항 1개 이상</b></td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>난이도 상한에 대한 판단</b><br>
+약술형 논술은 수능최저를 두지 않고 중위권을 겨냥해 <b>의도적으로 낮게 설계된 전형</b>이며, 출제범위도 수학Ⅰ·Ⅱ로 한정됩니다.
+따라서 수리논술급 난이도나 미적분·기하로의 확장은 <b>실전 재현성을 오히려 떨어뜨립니다</b>.
+본 자료는 제1·2회를 실전 상단에 맞추고, 제3회만 한 단계 위로 올려 <b>안전마진</b>을 확보하는 구조를 택했습니다.
+제3회에서 막히더라도 실전 대비에는 문제가 없으며, <b>제1·2회를 35분 안에 무실점으로 끝내는 것</b>이 합격선의 실질 기준입니다.
+</div>
+
+<h3 class="sec">2. 회차별 문항 지도</h3>
+<table>
+<thead><tr><th style="width:6%">#</th><th style="width:31%">제1회 (실전 상단)</th><th style="width:31%">제2회 (실전 상단)</th><th style="width:32%">제3회 (안전마진)</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td>로그의 성질 / 2점</td><td>지수법칙 / 2점</td><td>로그 치환 방정식 · 근의 곱 / 4점</td></tr>
+<tr><td class="c">2</td><td>삼각부등식 / 3점</td><td>상용로그 / 2점</td><td>절댓값 삼각함수 · 실근 개수 / 4점</td></tr>
+<tr><td class="c">3</td><td>등비수열의 합 / 3점</td><td>코사인법칙 + 넓이 / 3점</td><td>조건 분기 점화식 / 4점</td></tr>
+<tr><td class="c">4</td><td>접선(기울기 조건) / 3점</td><td>무리식 극한 / 3점</td><td>미분가능성 / 4점</td></tr>
+<tr><td class="c">5</td><td>로그 + 근과 계수 / <b>4점</b></td><td>극값 조건 → 계수 결정 / <b>4점</b></td><td>삼차방정식 실근 개수 → 정수 개수 / 4점</td></tr>
+<tr><td class="c">6</td><td>S<sub>n</sub> → a<sub>n</sub> + 부분분수 / <b>4점</b></td><td>계차수열 + 부등식 / <b>4점</b></td><td>곡선 위 점의 최단거리 / 4점</td></tr>
+<tr><td class="c">7</td><td>두 곡선 사이 넓이 / <b>4점</b></td><td>절댓값 정적분 / <b>4점</b></td><td>정적분으로 정의된 함수 / 4점</td></tr>
+</tbody>
+</table>
+
+<div class="tip">
+<b>채점 기준</b> — 각 문항 10점을 <b>과정 5점 + 답 5점</b>으로 나누어 매기십시오. 약술형이라도 최종 답만 적으면 과정 5점은 받을 수 없습니다.
+조건 처리(진수 조건, 정의역, 판별식, 부호 분할)를 <u>명시하지 않으면</u> 답이 맞아도 과정에서 2점을 깎습니다.
+</div>
+<div class="page-break"></div>
+<div class="part"><div class="n">SET 1</div><h2>수학 예상문제 제1회</h2></div>
+<div class="examhead">
+  <div class="t">제1회 · 실전 상단 재현</div>
+  <div class="s">수능 2~3점 4문항 + 4점 초반 3문항</div>
+  <div class="bar"><span><b>문항</b> 7문항</span><span><b>배점</b> 문항당 10점 / 70점</span><span><b>권장 시간</b> 35분</span><span><b>범위</b> 수학Ⅰ·수학Ⅱ</span></div>
+</div>
+<div class="tip" style="margin-top:0">풀이 과정을 반드시 함께 쓰시오. 진수 조건·정의역·부호 분할 등 <b>조건 처리를 명시</b>하지 않으면 감점됩니다.</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>log<sub>3</sub>2 = <i>a</i> 일 때, log<sub>3</sub>48 을 <i>a</i>에 대한 식으로 나타내시오.<span class="lv">2점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>0 &lt; <i>x</i> &lt; 2π 에서 부등식 2cos<sup>2</sup><i>x</i> + 3sin <i>x</i> − 3 ≥ 0 을 만족시키는 <i>x</i>의 값의 범위를 구하시오.<span class="lv m">3점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>등비수열 {<i>a<sub>n</sub></i>} 의 첫째항부터 제<i>n</i>항까지의 합을 <i>S<sub>n</sub></i> 이라 하자. <i>S</i><sub>3</sub> = 7, <i>S</i><sub>6</sub> = 63 일 때 첫째항 <i>a</i><sub>1</sub> 과 공비 <i>r</i> 를 구하시오. (단, <i>r</i> 는 실수)<span class="lv m">3점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">4</span>곡선 <i>y</i> = <i>x</i><sup>3</sup> − 3<i>x</i><sup>2</sup> + 2 에 접하고 기울기가 9 인 접선의 방정식을 <b>모두</b> 구하시오.<span class="lv m">3점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">5</span><i>x</i>에 대한 방정식 (log<sub>2</sub><i>x</i>)<sup>2</sup> − log<sub>2</sub><i>x</i><sup>4</sup> + 3 = 0 의 두 근을 α, β 라 할 때, αβ 의 값을 구하시오.<span class="lv h">4점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">6</span>수열 {<i>a<sub>n</sub></i>} 이 모든 자연수 <i>n</i>에 대하여 <span class="m">Σ<sub>k=1</sub><sup>n</sup> <i>a<sub>k</sub></i> = <i>n</i><sup>2</sup> + 2<i>n</i></span> 을 만족시킨다.<span class="lv h">4점</span></div>
+<div class="sub">(1) 일반항 <i>a<sub>n</sub></i> 을 구하시오.<br>(2) <span class="m">Σ<sub>k=1</sub><sup>10</sup> 1 / (<i>a<sub>k</sub></i> · <i>a</i><sub><i>k</i>+1</sub>)</span> 의 값을 구하시오.</div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>곡선 <i>y</i> = <i>x</i><sup>3</sup> − 3<i>x</i> 와 직선 <i>y</i> = <i>x</i> 로 둘러싸인 부분의 넓이를 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="page-break"></div>
+<div class="part"><div class="n">SET 2</div><h2>수학 예상문제 제2회</h2></div>
+<div class="examhead">
+  <div class="t">제2회 · 실전 상단 재현</div>
+  <div class="s">수능 2~3점 4문항 + 4점 초반 3문항</div>
+  <div class="bar"><span><b>문항</b> 7문항</span><span><b>배점</b> 문항당 10점 / 70점</span><span><b>권장 시간</b> 35분</span><span><b>범위</b> 수학Ⅰ·수학Ⅱ</span></div>
+</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>(3<sup>√2+1</sup>)<sup>√2−1</sup> 의 값을 구하시오.<span class="lv">2점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>log 2 = 0.3010, log 3 = 0.4771 일 때 log 72 의 값을 구하시오.<span class="lv">2점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>삼각형 ABC 에서 <span class="m">AB = 6, AC = 5, ∠A = 60°</span> 일 때, 변 BC 의 길이와 삼각형 ABC 의 넓이를 각각 구하시오.<span class="lv m">3점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">4</span>극한값 <span class="m">lim<sub><i>x</i>→1</sub> (√(<i>x</i>+3) − 2) / (<i>x</i> − 1)</span> 을 구하시오.<span class="lv m">3점</span></div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">5</span>함수 <i>f</i>(<i>x</i>) = <i>x</i><sup>3</sup> + <i>ax</i><sup>2</sup> + <i>bx</i> + <i>c</i> 가 <i>x</i> = 1 에서 극댓값 3 을 갖고 <i>x</i> = 3 에서 극솟값을 가질 때, 상수 <i>a</i>, <i>b</i>, <i>c</i> 의 값과 극솟값을 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">6</span>수열 {<i>a<sub>n</sub></i>} 이 <i>a</i><sub>1</sub> = 1, <i>a</i><sub><i>n</i>+1</sub> = <i>a<sub>n</sub></i> + 2<i>n</i> (<i>n</i> ≥ 1) 을 만족시킨다.<span class="lv h">4점</span></div>
+<div class="sub">(1) <i>a</i><sub>10</sub> 의 값을 구하시오.<br>(2) <i>a<sub>n</sub></i> &gt; 200 을 만족시키는 자연수 <i>n</i> 의 최솟값을 구하시오.</div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>정적분 <span class="m">∫<sub>0</sub><sup>3</sup> |<i>x</i><sup>2</sup> − 2<i>x</i>| <i>dx</i></span> 의 값을 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="page-break"></div>
+<div class="part"><div class="n">SET 3</div><h2>수학 예상문제 제3회 — 안전마진</h2></div>
+<div class="examhead">
+  <div class="t">제3회 · 오버슈팅</div>
+  <div class="s">전 문항 수능 4점 중반 · 실전보다 한 단계 위</div>
+  <div class="bar"><span><b>문항</b> 7문항</span><span><b>배점</b> 문항당 10점 / 70점</span><span><b>권장 시간</b> 45분</span><span><b>범위</b> 수학Ⅰ·수학Ⅱ</span></div>
+</div>
+<div class="note" style="margin-top:0"><b>이 회차의 사용법</b> — 실전 재현이 목적이 아니라 <b>상한 확인</b>이 목적입니다. 시간 안에 못 끝내도 정상이며, 제1·2회를 35분 무실점으로 끝낸 뒤에 푸십시오.</div>
+
+<div class="q"><div class="qh"><span class="no">1</span>방정식 <i>x</i><sup>log<sub>2</sub><i>x</i></sup> = 8<i>x</i><sup>2</sup> 의 모든 실근의 곱을 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">2</span>0 ≤ <i>x</i> &lt; 2π 에서 방정식 |2 sin <i>x</i>| = <i>k</i> 가 서로 다른 <b>네 개</b>의 실근을 갖도록 하는 실수 <i>k</i> 의 값의 범위를 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">3</span>수열 {<i>a<sub>n</sub></i>} 이 <i>a</i><sub>1</sub> = 3 이고, 모든 자연수 <i>n</i> 에 대하여 아래와 같이 정의될 때 <i>a</i><sub>1</sub> + <i>a</i><sub>2</sub> + … + <i>a</i><sub>10</sub> 의 값을 구하시오.<span class="lv h">4점</span></div>
+<div class="box"><i>a</i><sub><i>n</i>+1</sub> = <i>a<sub>n</sub></i> + 1 &nbsp;(<i>a<sub>n</sub></i> 이 홀수일 때) &nbsp;&nbsp;/&nbsp;&nbsp; <i>a</i><sub><i>n</i>+1</sub> = <i>a<sub>n</sub></i> / 2 &nbsp;(<i>a<sub>n</sub></i> 이 짝수일 때)</div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">4</span>함수 <i>f</i>(<i>x</i>) 가 <i>x</i> = 1 에서 미분가능할 때, 상수 <i>a</i>, <i>b</i> 의 값을 구하시오.<span class="lv h">4점</span></div>
+<div class="box"><i>f</i>(<i>x</i>) = <i>x</i><sup>3</sup> + <i>ax</i> &nbsp;(<i>x</i> ≤ 1), &nbsp;&nbsp; <i>f</i>(<i>x</i>) = <i>bx</i><sup>2</sup> + 2 &nbsp;(<i>x</i> &gt; 1)</div>
+<div class="ans"></div></div>
+
+<div class="q"><div class="qh"><span class="no">5</span><i>x</i>에 대한 방정식 <i>x</i><sup>3</sup> − 3<i>x</i><sup>2</sup> − 9<i>x</i> − <i>k</i> = 0 이 서로 다른 <b>세 실근</b>을 갖도록 하는 정수 <i>k</i> 의 개수를 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">6</span>곡선 <i>y</i> = <i>x</i><sup>2</sup> (<i>x</i> ≥ 0) 위를 움직이는 점 P 와 점 A(3, 0) 사이의 거리가 최소가 될 때, 점 P 의 좌표를 구하시오.<span class="lv h">4점</span></div>
+<div class="ans big"></div></div>
+
+<div class="q"><div class="qh"><span class="no">7</span>다항함수 <i>f</i>(<i>x</i>) 가 모든 실수 <i>x</i> 에 대하여 아래 식을 만족시킨다.<span class="lv h">4점</span></div>
+<div class="box"><i>f</i>(<i>x</i>) = 3<i>x</i><sup>2</sup> + <i>x</i> ∫<sub>0</sub><sup>1</sup> <i>f</i>(<i>t</i>) <i>dt</i></div>
+<div class="sub">(1) <i>f</i>(2) 의 값을 구하시오. &nbsp;&nbsp;(2) <span class="m">∫<sub>0</sub><sup>2</sup> <i>f</i>(<i>x</i>) <i>dx</i></span> 의 값을 구하시오.</div>
+<div class="ans big"></div></div>
+<div class="page-break"></div>
+<div class="part"><div class="n">SOLUTIONS</div><h2>정답 및 해설</h2></div>
+
+<h3 class="sec">제1회 · 실전 상단</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>로그의 성질 <span style="font-weight:400;color:#6b7684">/ 2점</span></div>
+<div class="a"><b>답</b> 4<i>a</i> + 1</div>
+<div class="e">48 = 16 × 3 = 2<sup>4</sup> · 3 이므로<br>
+log<sub>3</sub>48 = log<sub>3</sub>2<sup>4</sup> + log<sub>3</sub>3 = 4 log<sub>3</sub>2 + 1 = <b>4<i>a</i> + 1</b></div>
+<div class="rub">과정 5점: 48을 2<sup>4</sup>·3 으로 소인수분해 / 답 5점.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>삼각부등식 <span style="font-weight:400;color:#6b7684">/ 3점</span></div>
+<div class="a"><b>답</b> π/6 ≤ <i>x</i> ≤ 5π/6</div>
+<div class="e">cos<sup>2</sup><i>x</i> = 1 − sin<sup>2</sup><i>x</i> 를 대입하여 sin <i>x</i> 에 대한 이차부등식으로 바꾼다.<br>
+2(1 − sin<sup>2</sup><i>x</i>) + 3 sin <i>x</i> − 3 ≥ 0 → −2 sin<sup>2</sup><i>x</i> + 3 sin <i>x</i> − 1 ≥ 0<br>
+양변에 −1 을 곱하면 <span class="warn">부등호 방향이 바뀐다</span>: 2 sin<sup>2</sup><i>x</i> − 3 sin <i>x</i> + 1 ≤ 0<br>
+(2 sin <i>x</i> − 1)(sin <i>x</i> − 1) ≤ 0 → 1/2 ≤ sin <i>x</i> ≤ 1<br>
+sin <i>x</i> ≤ 1 은 항상 참이므로 sin <i>x</i> ≥ 1/2 만 풀면 된다. 0 &lt; <i>x</i> &lt; 2π 에서 ∴ <b>π/6 ≤ <i>x</i> ≤ 5π/6</b></div>
+<div class="rub"><span class="warn">빈출 실수</span> — 양변에 −1을 곱하고 부등호를 그대로 두는 것. 단위원에서 sin <i>x</i> ≥ 1/2 구간을 잡을 때 5π/6 을 π/3 로 잘못 읽는 것.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>등비수열의 합 <span style="font-weight:400;color:#6b7684">/ 3점</span></div>
+<div class="a"><b>답</b> <i>a</i><sub>1</sub> = 1, <i>r</i> = 2</div>
+<div class="e"><i>S</i><sub>6</sub> = <i>S</i><sub>3</sub> + <i>r</i><sup>3</sup> <i>S</i><sub>3</sub> = <i>S</i><sub>3</sub>(1 + <i>r</i><sup>3</sup>) 이므로<br>
+63 = 7(1 + <i>r</i><sup>3</sup>) → 1 + <i>r</i><sup>3</sup> = 9 → <i>r</i><sup>3</sup> = 8 → <b><i>r</i> = 2</b> (실수 범위)<br>
+<i>S</i><sub>3</sub> = <i>a</i><sub>1</sub>(1 + 2 + 4) = 7<i>a</i><sub>1</sub> = 7 → <b><i>a</i><sub>1</sub> = 1</b></div>
+<div class="rub"><span class="key">핵심</span> — 합 공식을 그대로 연립하지 말고 <i>S</i><sub>6</sub> = <i>S</i><sub>3</sub>(1 + <i>r</i><sup>3</sup>) 으로 묶으면 3줄에 끝난다. 시간 절약형 풀이.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>접선(기울기 조건) <span style="font-weight:400;color:#6b7684">/ 3점</span></div>
+<div class="a"><b>답</b> <i>y</i> = 9<i>x</i> − 25, &nbsp; <i>y</i> = 9<i>x</i> + 7</div>
+<div class="e"><i>y</i>′ = 3<i>x</i><sup>2</sup> − 6<i>x</i> = 9 → <i>x</i><sup>2</sup> − 2<i>x</i> − 3 = 0 → (<i>x</i> − 3)(<i>x</i> + 1) = 0 → <i>x</i> = 3 또는 <i>x</i> = −1<br>
+<i>x</i> = 3 일 때 <i>y</i> = 27 − 27 + 2 = 2 → <i>y</i> − 2 = 9(<i>x</i> − 3) → <b><i>y</i> = 9<i>x</i> − 25</b><br>
+<i>x</i> = −1 일 때 <i>y</i> = −1 − 3 + 2 = −2 → <i>y</i> + 2 = 9(<i>x</i> + 1) → <b><i>y</i> = 9<i>x</i> + 7</b></div>
+<div class="rub"><span class="warn">빈출 실수</span> — 접점이 두 개인데 하나만 쓰고 끝내는 것. '모두 구하시오'는 개수를 세라는 신호다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>로그 치환 + 근과 계수의 관계 <span style="font-weight:400;color:#6b7684">/ 4점 초반</span></div>
+<div class="a"><b>답</b> αβ = 16</div>
+<div class="e">진수 조건 <i>x</i> &gt; 0. log<sub>2</sub><i>x</i><sup>4</sup> = 4 log<sub>2</sub><i>x</i> 이므로 <i>t</i> = log<sub>2</sub><i>x</i> 로 치환하면<br>
+<i>t</i><sup>2</sup> − 4<i>t</i> + 3 = 0<br>
+<span class="key">[풀이 1 — 근과 계수]</span> 두 근 <i>t</i><sub>1</sub> = log<sub>2</sub>α, <i>t</i><sub>2</sub> = log<sub>2</sub>β 의 합은 4 이므로<br>
+log<sub>2</sub>α + log<sub>2</sub>β = log<sub>2</sub>(αβ) = 4 → αβ = 2<sup>4</sup> = <b>16</b><br>
+<span class="key">[풀이 2 — 직접]</span> <i>t</i> = 1, 3 → <i>x</i> = 2, 8 → αβ = <b>16</b></div>
+<div class="rub"><span class="key">결합 포인트</span> — 로그 치환 + 이차방정식 근과 계수. 근을 직접 구하지 않고 합만 써서 끝내는 것이 이 유형의 정석이며, 근이 무리수인 변형 문제에서는 풀이 1만 통한다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span><i>S<sub>n</sub></i> → <i>a<sub>n</sub></i> + 부분분수 <span style="font-weight:400;color:#6b7684">/ 4점 초반</span></div>
+<div class="a"><b>답</b> (1) <i>a<sub>n</sub></i> = 2<i>n</i> + 1 &nbsp;&nbsp; (2) 10/69</div>
+<div class="e"><b>(1)</b> <i>S<sub>n</sub></i> = <i>n</i><sup>2</sup> + 2<i>n</i> 이라 하면 <i>a</i><sub>1</sub> = <i>S</i><sub>1</sub> = 3.<br>
+<i>n</i> ≥ 2 일 때 <i>a<sub>n</sub></i> = <i>S<sub>n</sub></i> − <i>S</i><sub><i>n</i>−1</sub> = (<i>n</i><sup>2</sup> + 2<i>n</i>) − {(<i>n</i>−1)<sup>2</sup> + 2(<i>n</i>−1)} = (<i>n</i><sup>2</sup> + 2<i>n</i>) − (<i>n</i><sup>2</sup> − 1) = 2<i>n</i> + 1<br>
+<i>n</i> = 1 을 대입하면 3 으로 <i>a</i><sub>1</sub> 과 일치하므로 <b><i>a<sub>n</sub></i> = 2<i>n</i> + 1 (<i>n</i> ≥ 1)</b><br><br>
+<b>(2)</b> <i>a<sub>k</sub></i> <i>a</i><sub><i>k</i>+1</sub> = (2<i>k</i>+1)(2<i>k</i>+3) 이므로 부분분수로 분해한다.<br>
+1/{(2<i>k</i>+1)(2<i>k</i>+3)} = (1/2){ 1/(2<i>k</i>+1) − 1/(2<i>k</i>+3) }<br>
+Σ<sub>k=1</sub><sup>10</sup> 은 망원급수로 중간 항이 모두 소거되어<br>
+= (1/2)( 1/3 − 1/23 ) = (1/2) · 20/69 = <b>10/69</b></div>
+<div class="rub"><span class="key">결합 포인트</span> — <i>S<sub>n</sub></i>↔<i>a<sub>n</sub></i> 관계 + 부분분수 망원급수. <span class="warn">반드시 <i>n</i> = 1 대입 검증</span>을 쓸 것. 일치하지 않는 문제도 출제되므로 검증 문장 자체가 채점 요소다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>두 곡선 사이의 넓이 <span style="font-weight:400;color:#6b7684">/ 4점 초반</span></div>
+<div class="a"><b>답</b> 8</div>
+<div class="e">교점: <i>x</i><sup>3</sup> − 3<i>x</i> = <i>x</i> → <i>x</i><sup>3</sup> − 4<i>x</i> = 0 → <i>x</i>(<i>x</i> + 2)(<i>x</i> − 2) = 0 → <i>x</i> = −2, 0, 2<br>
+구간마다 위아래가 바뀌므로 <span class="warn">두 구간으로 나누어</span> 계산한다.<br>
+−2 &lt; <i>x</i> &lt; 0 : 곡선이 위 → ∫<sub>−2</sub><sup>0</sup> (<i>x</i><sup>3</sup> − 4<i>x</i>) <i>dx</i> = [<i>x</i><sup>4</sup>/4 − 2<i>x</i><sup>2</sup>]<sub>−2</sub><sup>0</sup> = 0 − (4 − 8) = 4<br>
+0 &lt; <i>x</i> &lt; 2 : 직선이 위 → ∫<sub>0</sub><sup>2</sup> (4<i>x</i> − <i>x</i><sup>3</sup>) <i>dx</i> = [2<i>x</i><sup>2</sup> − <i>x</i><sup>4</sup>/4]<sub>0</sub><sup>2</sup> = 8 − 4 = 4<br>
+∴ 넓이 = 4 + 4 = <b>8</b><br>
+<span class="key">단축</span> — 두 함수의 차 <i>x</i><sup>3</sup> − 4<i>x</i> 가 기함수이므로 원점 대칭. 한쪽만 구해 2배 해도 된다.</div>
+<div class="rub"><span class="warn">빈출 실수</span> — 구간을 나누지 않고 ∫<sub>−2</sub><sup>2</sup> 를 한 번에 계산하면 두 넓이가 상쇄되어 0 이 나온다.</div></div>
+
+<div class="page-break"></div>
+<h3 class="sec">제2회 · 실전 상단</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>지수법칙 <span style="font-weight:400;color:#6b7684">/ 2점</span></div>
+<div class="a"><b>답</b> 3</div>
+<div class="e">(3<sup>√2+1</sup>)<sup>√2−1</sup> = 3<sup>(√2+1)(√2−1)</sup> = 3<sup>2−1</sup> = 3<sup>1</sup> = <b>3</b></div>
+<div class="rub">지수끼리 곱할 때 합차 공식 (<i>a</i>+<i>b</i>)(<i>a</i>−<i>b</i>) = <i>a</i><sup>2</sup> − <i>b</i><sup>2</sup> 을 쓰는 것이 전부다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>상용로그 <span style="font-weight:400;color:#6b7684">/ 2점</span></div>
+<div class="a"><b>답</b> 1.8572</div>
+<div class="e">72 = 8 × 9 = 2<sup>3</sup> · 3<sup>2</sup> 이므로<br>
+log 72 = 3 log 2 + 2 log 3 = 3(0.3010) + 2(0.4771) = 0.9030 + 0.9542 = <b>1.8572</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>코사인법칙 + 삼각형의 넓이 <span style="font-weight:400;color:#6b7684">/ 3점</span></div>
+<div class="a"><b>답</b> BC = √31, &nbsp; 넓이 = 15√3 / 2</div>
+<div class="e">코사인법칙: BC<sup>2</sup> = AB<sup>2</sup> + AC<sup>2</sup> − 2 · AB · AC · cos A<br>
+= 36 + 25 − 2 · 6 · 5 · cos 60° = 61 − 60 · (1/2) = 61 − 30 = 31 → <b>BC = √31</b><br>
+넓이 = (1/2) · AB · AC · sin A = (1/2) · 6 · 5 · (√3/2) = <b>15√3 / 2</b></div>
+<div class="rub"><span class="warn">빈출 실수</span> — 코사인법칙에서 −2<i>bc</i> cos A 의 부호를 +로 쓰는 것. 낀각이 60°이므로 cos 60° = 1/2, sin 60° = √3/2 를 혼동하지 말 것.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>무리식의 극한 <span style="font-weight:400;color:#6b7684">/ 3점</span></div>
+<div class="a"><b>답</b> 1/4</div>
+<div class="e"><i>x</i> → 1 일 때 0/0 꼴이므로 분자를 <span class="key">유리화</span>한다.<br>
+(√(<i>x</i>+3) − 2)/(<i>x</i>−1) × (√(<i>x</i>+3) + 2)/(√(<i>x</i>+3) + 2)<br>
+= (<i>x</i> + 3 − 4) / {(<i>x</i> − 1)(√(<i>x</i>+3) + 2)} = 1 / (√(<i>x</i>+3) + 2)<br>
+<i>x</i> → 1 을 대입하면 1 / (2 + 2) = <b>1/4</b></div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>극값 조건에서 계수 결정 <span style="font-weight:400;color:#6b7684">/ 4점 초반</span></div>
+<div class="a"><b>답</b> <i>a</i> = −6, <i>b</i> = 9, <i>c</i> = −1, &nbsp; 극솟값 = −1</div>
+<div class="e"><i>f</i>′(<i>x</i>) = 3<i>x</i><sup>2</sup> + 2<i>ax</i> + <i>b</i> 의 두 근이 1 과 3 이므로<br>
+<i>f</i>′(<i>x</i>) = 3(<i>x</i> − 1)(<i>x</i> − 3) = 3<i>x</i><sup>2</sup> − 12<i>x</i> + 9<br>
+계수 비교: 2<i>a</i> = −12 → <b><i>a</i> = −6</b>, &nbsp; <b><i>b</i> = 9</b><br>
+극댓값 조건: <i>f</i>(1) = 1 − 6 + 9 + <i>c</i> = 4 + <i>c</i> = 3 → <b><i>c</i> = −1</b><br>
+따라서 <i>f</i>(<i>x</i>) = <i>x</i><sup>3</sup> − 6<i>x</i><sup>2</sup> + 9<i>x</i> − 1 이고<br>
+극솟값 = <i>f</i>(3) = 27 − 54 + 27 − 1 = <b>−1</b></div>
+<div class="rub"><span class="key">결합 포인트</span> — 도함수를 인수분해 꼴로 <u>먼저 세우는</u> 것이 핵심. <i>f</i>′(1) = 0, <i>f</i>′(3) = 0 을 각각 대입해 연립해도 되지만 계산량이 2배가 된다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span>계차수열 + 부등식 <span style="font-weight:400;color:#6b7684">/ 4점 초반</span></div>
+<div class="a"><b>답</b> (1) <i>a</i><sub>10</sub> = 91 &nbsp;&nbsp; (2) <i>n</i> = 15</div>
+<div class="e"><b>(1)</b> <i>a</i><sub><i>n</i>+1</sub> − <i>a<sub>n</sub></i> = 2<i>n</i> 이므로 계차수열의 합을 이용한다. <i>n</i> ≥ 2 일 때<br>
+<i>a<sub>n</sub></i> = <i>a</i><sub>1</sub> + Σ<sub>k=1</sub><sup><i>n</i>−1</sup> 2<i>k</i> = 1 + 2 · (<i>n</i>−1)<i>n</i>/2 = <i>n</i><sup>2</sup> − <i>n</i> + 1<br>
+<i>n</i> = 1 대입 시 1 로 일치하므로 모든 <i>n</i> 에서 성립. ∴ <i>a</i><sub>10</sub> = 100 − 10 + 1 = <b>91</b><br><br>
+<b>(2)</b> <i>n</i><sup>2</sup> − <i>n</i> + 1 &gt; 200 → <i>n</i><sup>2</sup> − <i>n</i> − 199 &gt; 0<br>
+자연수이므로 대입으로 확인하는 편이 빠르다.<br>
+<i>a</i><sub>14</sub> = 196 − 14 + 1 = 183 ≤ 200, &nbsp; <i>a</i><sub>15</sub> = 225 − 15 + 1 = 211 &gt; 200<br>
+∴ 최솟값 <b><i>n</i> = 15</b></div>
+<div class="rub"><span class="key">결합 포인트</span> — 계차수열 일반항 + 이차부등식. <span class="warn">Σ 의 위끝이 <i>n</i> − 1</span> 이라는 점이 최대 실수 지점이다. <i>n</i> 까지 더하면 <i>a</i><sub><i>n</i>+1</sub> 이 나온다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>절댓값이 있는 정적분 <span style="font-weight:400;color:#6b7684">/ 4점 초반</span></div>
+<div class="a"><b>답</b> 8/3</div>
+<div class="e"><i>x</i><sup>2</sup> − 2<i>x</i> = <i>x</i>(<i>x</i> − 2) 의 부호가 <i>x</i> = 2 에서 바뀌므로 <span class="warn">구간을 [0, 2] 와 [2, 3] 으로 분할</span>한다.<br>
+0 ≤ <i>x</i> ≤ 2 : <i>x</i><sup>2</sup> − 2<i>x</i> ≤ 0 → |·| = 2<i>x</i> − <i>x</i><sup>2</sup><br>
+∫<sub>0</sub><sup>2</sup> (2<i>x</i> − <i>x</i><sup>2</sup>) <i>dx</i> = [<i>x</i><sup>2</sup> − <i>x</i><sup>3</sup>/3]<sub>0</sub><sup>2</sup> = 4 − 8/3 = 4/3<br>
+2 ≤ <i>x</i> ≤ 3 : <i>x</i><sup>2</sup> − 2<i>x</i> ≥ 0 → |·| = <i>x</i><sup>2</sup> − 2<i>x</i><br>
+∫<sub>2</sub><sup>3</sup> (<i>x</i><sup>2</sup> − 2<i>x</i>) <i>dx</i> = [<i>x</i><sup>3</sup>/3 − <i>x</i><sup>2</sup>]<sub>2</sub><sup>3</sup> = (9 − 9) − (8/3 − 4) = 4/3<br>
+∴ 합 = 4/3 + 4/3 = <b>8/3</b></div>
+<div class="rub"><span class="warn">빈출 실수</span> — 절댓값을 무시하고 ∫<sub>0</sub><sup>3</sup>(<i>x</i><sup>2</sup>−2<i>x</i>)<i>dx</i> = 0 으로 답하는 것. 절댓값 정적분은 <u>부호가 바뀌는 점을 먼저 찾는다</u>가 1단계다.</div></div>
+
+<div class="page-break"></div>
+<h3 class="sec">제3회 · 안전마진</h3>
+
+<div class="sol"><div class="sh"><span class="no">1</span>로그 치환 방정식 · 근의 곱 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> 4</div>
+<div class="e">진수 및 밑 조건에서 <i>x</i> &gt; 0. 양변에 밑이 2 인 로그를 취한다.<br>
+log<sub>2</sub>(<i>x</i><sup>log<sub>2</sub><i>x</i></sup>) = log<sub>2</sub>(8<i>x</i><sup>2</sup>)<br>
+(log<sub>2</sub><i>x</i>)(log<sub>2</sub><i>x</i>) = 3 + 2 log<sub>2</sub><i>x</i><br>
+<i>t</i> = log<sub>2</sub><i>x</i> 로 두면 <i>t</i><sup>2</sup> − 2<i>t</i> − 3 = 0<br>
+근과 계수의 관계에서 두 근의 합이 2 이므로<br>
+log<sub>2</sub>α + log<sub>2</sub>β = log<sub>2</sub>(αβ) = 2 → αβ = 2<sup>2</sup> = <b>4</b><br>
+(직접 풀면 <i>t</i> = 3, −1 → <i>x</i> = 8, 1/2 → 곱 4 로 동일)</div>
+<div class="rub"><span class="key">난이도 요인</span> — 지수 자리에 로그가 들어간 형태를 보고 <u>양변에 로그를 취한다</u>는 판단을 스스로 해야 한다. 이 판단이 서면 뒤는 2점짜리다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">2</span>절댓값 삼각함수의 실근 개수 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> 0 &lt; <i>k</i> &lt; 2</div>
+<div class="e"><i>y</i> = |2 sin <i>x</i>| 의 그래프를 0 ≤ <i>x</i> &lt; 2π 에서 그린다. 최댓값 2 (<i>x</i> = π/2, 3π/2), 값이 0 인 점은 <i>x</i> = 0, π 이며 <span class="warn"><i>x</i> = 2π 는 구간에 포함되지 않는다</span>.<br>
+직선 <i>y</i> = <i>k</i> 와의 교점 개수를 <i>k</i> 에 따라 센다.<br>
+· <i>k</i> &lt; 0 : 0 개<br>
+· <i>k</i> = 0 : <i>x</i> = 0, π → 2 개<br>
+· 0 &lt; <i>k</i> &lt; 2 : (0, π) 에서 2 개, (π, 2π) 에서 2 개 → <b>4 개</b><br>
+· <i>k</i> = 2 : <i>x</i> = π/2, 3π/2 → 2 개<br>
+· <i>k</i> &gt; 2 : 0 개<br>
+∴ <b>0 &lt; <i>k</i> &lt; 2</b></div>
+<div class="rub"><span class="key">난이도 요인</span> — 계산이 아니라 <u>그래프 개형과 구간 끝점 포함 여부</u>를 따지는 문항. <i>k</i> = 0 과 <i>k</i> = 2 를 경계에서 따로 확인했다는 서술이 과정 점수의 핵심이다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">3</span>조건 분기 점화식 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> 19</div>
+<div class="e">항을 차례로 계산한다.<br>
+<i>a</i><sub>1</sub> = 3 (홀) → <i>a</i><sub>2</sub> = 4 (짝) → <i>a</i><sub>3</sub> = 2 (짝) → <i>a</i><sub>4</sub> = 1 (홀) → <i>a</i><sub>5</sub> = 2 → <i>a</i><sub>6</sub> = 1 → …<br>
+<i>a</i><sub>4</sub> 이후로는 <b>2, 1 이 반복</b>된다.<br>
+<i>a</i><sub>1</sub>~<i>a</i><sub>10</sub> = 3, 4, 2, 1, 2, 1, 2, 1, 2, 1<br>
+합 = 3 + 4 + (2 + 1) × 3 + (2 + 1) = 3 + 4 + 12 = <b>19</b></div>
+<div class="rub"><span class="key">난이도 요인</span> — 일반항이 없고 <u>주기를 발견</u>해야 한다. 항을 5~6개 쓰다 말고 규칙을 단정하면 틀린다. <i>a</i><sub>10</sub> 까지 전부 나열하는 편이 안전하며 시간도 더 걸리지 않는다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">4</span>미분가능성 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> <i>a</i> = 5, <i>b</i> = 4</div>
+<div class="e">미분가능하려면 <b>연속</b>이고 <b>좌·우미분계수가 일치</b>해야 한다. 두 조건을 모두 써야 한다.<br>
+<span class="key">[연속]</span> 1 + <i>a</i> = <i>b</i> + 2 &nbsp;···①<br>
+<span class="key">[미분계수]</span> <i>x</i> ≤ 1 에서 <i>f</i>′(<i>x</i>) = 3<i>x</i><sup>2</sup> + <i>a</i> → 좌미분계수 3 + <i>a</i><br>
+<i>x</i> &gt; 1 에서 <i>f</i>′(<i>x</i>) = 2<i>bx</i> → 우미분계수 2<i>b</i><br>
+3 + <i>a</i> = 2<i>b</i> &nbsp;···②<br>
+①에서 <i>a</i> = <i>b</i> + 1 을 ②에 대입: 3 + <i>b</i> + 1 = 2<i>b</i> → <b><i>b</i> = 4</b>, <b><i>a</i> = 5</b><br>
+검산: 연속 1 + 5 = 6 = 4 + 2 ✓ &nbsp; 미분계수 3 + 5 = 8 = 2 · 4 ✓</div>
+<div class="rub"><span class="warn">빈출 실수</span> — 미분계수 조건만 쓰고 연속 조건을 빠뜨리는 것. 미분가능성 문제는 <u>조건이 항상 두 개</u>다. 한 조건만 쓰면 답이 나와도 과정 5점 중 3점이 날아간다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">5</span>삼차방정식의 실근 개수 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> 31개</div>
+<div class="e"><i>x</i><sup>3</sup> − 3<i>x</i><sup>2</sup> − 9<i>x</i> = <i>k</i> 로 변형하여, 곡선 <i>y</i> = <i>g</i>(<i>x</i>) = <i>x</i><sup>3</sup> − 3<i>x</i><sup>2</sup> − 9<i>x</i> 와 직선 <i>y</i> = <i>k</i> 의 교점 개수로 본다.<br>
+<i>g</i>′(<i>x</i>) = 3<i>x</i><sup>2</sup> − 6<i>x</i> − 9 = 3(<i>x</i> − 3)(<i>x</i> + 1)<br>
+극댓값 <i>g</i>(−1) = −1 − 3 + 9 = 5, &nbsp; 극솟값 <i>g</i>(3) = 27 − 27 − 27 = −27<br>
+서로 다른 세 실근 ⇔ <span class="key">극솟값 &lt; <i>k</i> &lt; 극댓값</span> ⇔ −27 &lt; <i>k</i> &lt; 5<br>
+정수 <i>k</i> = −26, −25, …, 4 → 개수 = 4 − (−26) + 1 = <b>31</b></div>
+<div class="rub"><span class="warn">빈출 실수</span> — ① 등호를 포함해 −27 ≤ <i>k</i> ≤ 5 로 두면 중근이 생겨 실근이 2개가 된다. ② 개수를 셀 때 +1 을 빠뜨려 30 으로 답하는 것.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">6</span>곡선 위 점까지의 최단거리 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> P(1, 1) &nbsp;(이때 최단거리는 √5)</div>
+<div class="e">P(<i>x</i>, <i>x</i><sup>2</sup>) (<i>x</i> ≥ 0) 로 두고, 거리 대신 <span class="key">거리의 제곱</span>을 최소화한다(√ 가 있으면 미분이 번거롭고, 거리와 그 제곱은 같은 점에서 최소가 된다).<br>
+<i>h</i>(<i>x</i>) = (<i>x</i> − 3)<sup>2</sup> + (<i>x</i><sup>2</sup>)<sup>2</sup> = <i>x</i><sup>4</sup> + <i>x</i><sup>2</sup> − 6<i>x</i> + 9<br>
+<i>h</i>′(<i>x</i>) = 4<i>x</i><sup>3</sup> + 2<i>x</i> − 6 = 2(2<i>x</i><sup>3</sup> + <i>x</i> − 3) = 2(<i>x</i> − 1)(2<i>x</i><sup>2</sup> + 2<i>x</i> + 3)<br>
+2<i>x</i><sup>2</sup> + 2<i>x</i> + 3 의 판별식은 4 − 24 = −20 &lt; 0 이고 최고차항이 양수이므로 <span class="warn">항상 양수</span>. 따라서 <i>h</i>′(<i>x</i>) 의 부호는 (<i>x</i> − 1) 의 부호와 같다.<br>
+<i>x</i> &lt; 1 에서 감소, <i>x</i> &gt; 1 에서 증가 → <i>x</i> = 1 에서 최소<br>
+∴ <b>P(1, 1)</b>, 최단거리 = √{(1−3)<sup>2</sup> + 1<sup>2</sup>} = √5</div>
+<div class="rub"><span class="key">난이도 요인</span> — 최적화 대상을 <u>거리의 제곱으로 바꾸는 착상</u>과, 삼차식을 인수분해한 뒤 <u>남은 이차식이 부호를 바꾸지 않음을 판별식으로 보이는</u> 단계. 이 판별식 서술이 빠지면 과정 점수를 깎인다.</div></div>
+
+<div class="sol"><div class="sh"><span class="no">7</span>정적분으로 정의된 함수 <span style="font-weight:400;color:#6b7684">/ 4점 중반</span></div>
+<div class="a"><b>답</b> (1) <i>f</i>(2) = 16 &nbsp;&nbsp; (2) 12</div>
+<div class="e">∫<sub>0</sub><sup>1</sup> <i>f</i>(<i>t</i>) <i>dt</i> 는 <i>x</i> 와 무관한 <span class="key">상수</span>이므로 <i>k</i> 로 둔다.<br>
+<i>f</i>(<i>x</i>) = 3<i>x</i><sup>2</sup> + <i>kx</i><br>
+이 식을 다시 정의식에 넣어 <i>k</i> 를 결정한다.<br>
+<i>k</i> = ∫<sub>0</sub><sup>1</sup> (3<i>t</i><sup>2</sup> + <i>kt</i>) <i>dt</i> = [<i>t</i><sup>3</sup> + <i>kt</i><sup>2</sup>/2]<sub>0</sub><sup>1</sup> = 1 + <i>k</i>/2<br>
+<i>k</i>/2 = 1 → <i>k</i> = 2 &nbsp;→&nbsp; <b><i>f</i>(<i>x</i>) = 3<i>x</i><sup>2</sup> + 2<i>x</i></b><br><br>
+<b>(1)</b> <i>f</i>(2) = 12 + 4 = <b>16</b><br>
+<b>(2)</b> ∫<sub>0</sub><sup>2</sup> (3<i>x</i><sup>2</sup> + 2<i>x</i>) <i>dx</i> = [<i>x</i><sup>3</sup> + <i>x</i><sup>2</sup>]<sub>0</sub><sup>2</sup> = 8 + 4 = <b>12</b></div>
+<div class="rub"><span class="key">난이도 요인</span> — '정적분을 상수로 치환한다'는 정형 아이디어를 <u>먼저 떠올려야</u> 시작이 된다. 떠올리기만 하면 계산은 2점 수준. 약술형에서 반복 출제되는 대표 유형이므로 손에 익혀 둘 것.</div></div>
+
+<div class="page-break"></div>
+<div class="part"><div class="n">APPENDIX</div><h2>자기 채점표와 오답 진단</h2></div>
+
+<h3 class="sec">A. 자기 채점표</h3>
+<table>
+<thead><tr><th style="width:10%">문항</th><th style="width:15%">제1회<br>(과정/답)</th><th style="width:15%">제2회<br>(과정/답)</th><th style="width:15%">제3회<br>(과정/답)</th><th>오답 원인 (①개념 ②조건누락 ③계산 ④시간)</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c">2</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c">3</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c">4</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c">5</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c">6</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c">7</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td class="c">&nbsp;/&nbsp;</td><td></td></tr>
+<tr><td class="c"><b>합계</b></td><td class="c">&nbsp;&nbsp;/ 70</td><td class="c">&nbsp;&nbsp;/ 70</td><td class="c">&nbsp;&nbsp;/ 70</td><td></td></tr>
+</tbody>
+</table>
+
+<h3 class="sec">B. 원인별 처방</h3>
+<table>
+<thead><tr><th style="width:16%">원인</th><th style="width:30%">판별 기준</th><th>처방</th></tr></thead>
+<tbody>
+<tr><td class="c"><b>① 개념</b></td><td>해설을 봐도 첫 줄에서 막힌다</td><td>해당 단원 개념서로 복귀. 제3회에서만 발생했다면 <b>무시해도 된다</b> — 실전 범위 밖이다.</td></tr>
+<tr><td class="c"><b>② 조건 누락</b></td><td>답은 맞았는데 진수 조건·부호 분할·끝점 검사를 안 썼다</td><td>가장 시급하다. 약술형은 과정 채점 비중이 높아 <b>실점이 바로 누적</b>된다. 문항마다 '조건 한 줄 먼저 쓰기'를 습관화.</td></tr>
+<tr><td class="c"><b>③ 계산</b></td><td>방향은 맞는데 숫자가 틀린다</td><td>제1·2회를 <b>시간 무제한</b>으로 다시 풀어 계산 정확도만 측정. 정확도가 나오면 속도만 올리면 된다.</td></tr>
+<tr><td class="c"><b>④ 시간</b></td><td>손도 못 댄 문항이 있다</td><td>배점 표시를 보고 <b>2~3점 4문항을 15분 안에</b> 끝내는 훈련부터. 4점 문항은 남는 20분에 배분.</td></tr>
+</tbody>
+</table>
+
+<h3 class="sec">C. 합격선 기준</h3>
+<div class="tip">
+수능최저가 없는 전형이라 동점자가 두껍게 쌓입니다. 현실적인 기준은 다음과 같습니다.<br>
+· <b>제1·2회를 각 35분 안에 60/70 이상</b> — 실전 안정권<br>
+· <b>제1·2회 45/70 수준</b> — 2~3점 4문항 무실점 훈련이 우선. 4점 문항은 그 다음<br>
+· <b>제3회 점수</b> — 참고용. 40/70 이면 상한은 충분하므로 여기에 시간을 더 쓰지 말고 제1·2회 속도에 투자
+</div>
+
+<div class="footer-note">
+본 자료의 21개 문항과 해설은 모두 본 자료를 위해 새로 작성한 것입니다. 을지대학교가 제작하거나 공인한 자료가 아닙니다.<br>
+출제범위는 약술형 논술 시행 대학의 공통 관행인 <b>수학Ⅰ·수학Ⅱ</b>로 가정했습니다. 실제 응시 전 입학처 수시모집요강과 논술 가이드북에서 반드시 확인하십시오.
+</div>
+
+</body></html>
